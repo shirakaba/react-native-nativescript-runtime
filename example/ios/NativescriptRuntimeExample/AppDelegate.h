@@ -7,11 +7,15 @@
 
 #import <React/RCTBridgeDelegate.h>
 #import <UIKit/UIKit.h>
+// START NativeScript runtime
 #import <NativeScript/NativeScript.h>
+// END NativeScript runtime
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
+// START NativeScript runtime
 @property (nonatomic, strong) TNSRuntime *runtime;
+// END NativeScript runtime
 
 @end
