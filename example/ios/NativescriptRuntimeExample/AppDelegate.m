@@ -29,10 +29,21 @@ static void InitializeFlipper(UIApplication *application) {
 }
 #endif
 
+#import "Runtime.h"
+#import "NativeScript/NativeScript.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  // START NativeScript setup
+  void *pointer = runtimeMeta();
+  [TNSRuntime initializeMetadata:pointer];
+  self.runtime = [[TNSRuntime alloc] initWithApplicationPath:[[NSBundle mainBundle] bundlePath]];
+  // TODO: include a bundle to execute
+  // [self.runtime executeModule:@"../public/nativescript/index.js"];
+  // END NativeScript setup
+  
   #ifdef FB_SONARKIT_ENABLED
     InitializeFlipper(application);
   #endif
