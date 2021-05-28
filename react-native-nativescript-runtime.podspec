@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
 
   # These will be packaged into the node module and, rather than the CocoaPod compiling them as sources, the
   # use_nativescript() command will do the rest.
-  s.exclude_files = ["ios/NativeScript/*.{h,m,mm}", "ios/TNSWidgets.xcframework"]
+  s.exclude_files = ["ios/NativeScript/*.{h,m,mm}", "ios/XCFrameworks.zip"]
 
   # As advised by: https://notificare.com/blog/2021/04/23/Publishing-XCFrameworks-via-CocoaPods/
   # However, if we do this, we get "[!] [Xcodeproj] Generated duplicate UUIDs:" 

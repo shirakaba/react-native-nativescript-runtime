@@ -24,6 +24,16 @@ def use_nativescript(options={})
   includeTKLiveSync = options[:includeTKLiveSync] ||= false
   doPostbuild = options[:doPostbuild] ||= false
 
+  if(options[:includeTKLiveSync])
+    # TKLiveSync is acquired by unzipping @nativescript/ios/framework/internal/XCFrameworks.zip.
+    # However, unzipping this into our project root would clobber NativeScript.xcframework with a same-named xcframework
+    # that lacks the TNSRuntime.h header. We could unzip into a temporary directory, but it's rather too much work given
+    # that even once installed, we ultimately don't support TKLiveSync functionality anyway (for now).
+    # In future, hopefully we'll have a neat package that gives everything needed without having to juggle so much.
+    puts "#{loggingPrefix} ❌ Including TKLiveSync is not supported for now but may be supported in future."
+    exit(1)
+  end
+
   if(options[:path_to_project].nil?)
     puts "#{loggingPrefix} ❌ Please provide a value for the param \"path_to_project\"."
     exit(1)
@@ -45,9 +55,8 @@ def use_nativescript(options={})
   nativeScriptIosRuntimeMetaDirectoryDestParentPath = scriptDirPath
   nativeScriptIosRuntimeMetaDirectoryDestPath = File.join(scriptDirPath, "NativeScript")
 
-  # This is built from @nativescript/ui-mobile-base, but the package isn't published, so we vend it with
-  # react-native-nativescript-runtime ourselves.
-  tnsWidgetsSourcePath = File.join(nativeScriptRuntimeNodeModulePath, "ios", "TNSWidgets.xcframework")
+  ## This is built from the @nativescript/ui-mobile-base GitHub project, but the package doesn't seem to be published anywhere.
+  ## So instead, we vend it along with TNSWidgets.xcframework in react-native-nativescript-runtime/ios/XCFrameworks.zip, just like NativeScript Capacitor does.
   tnsWidgetsXcframeworkDestParentPath = scriptDirPath
   tnsWidgetsXcframeworkDestPath = File.join(scriptDirPath, "TNSWidgets.xcframework")
   
@@ -55,7 +64,9 @@ def use_nativescript(options={})
   nativeScriptIosInternalDirectoryDestPath = File.join(scriptDirPath, "internal")
   nativeScriptIosInternalDirectoryDestXcframeworksZipPath = File.join(nativeScriptIosInternalDirectoryDestPath, "XCFrameworks.zip")
 
-  nativeScriptIosFrameworksSourcePath = File.join(nativeScriptIosPath, "framework", "internal", "XCFrameworks.zip")
+  ## Although there is indeed a NativeScript.xcframework within @nativescript/ios/framework/internal/XCFrameworks.zip, it lacks the TNSRuntime.h header.
+  ## So instead, we vend it along with TNSWidgets.xcframework in react-native-nativescript-runtime/ios/XCFrameworks.zip, just like NativeScript Capacitor does.
+  nativeScriptIosFrameworksSourcePath = File.join(nativeScriptRuntimeNodeModulePath, "ios", "XCFrameworks.zip")
   nativeScriptIosFrameworksExtractedDestPath = scriptDirPath
   nativeScriptXcframeworkDestPath = File.join(scriptDirPath, "NativeScript.xcframework")
 
@@ -88,13 +99,13 @@ def use_nativescript(options={})
     end
   end
 
-  if File.directory?(nativeScriptXcframeworkDestPath) && (includeTKLiveSync ? File.directory?(tKLiveSyncXcframeworkDestPath) : true) then
-    puts "#{loggingPrefix} ✅ Found both NativeScript.xcframework and TKLiveSync.xcframework in \"#{nativeScriptIosFrameworksExtractedDestPath}\", so will skip unzipping of \"#{nativeScriptIosFrameworksSourcePath}\"."
+  if File.directory?(nativeScriptXcframeworkDestPath) && File.directory?(tnsWidgetsXcframeworkDestPath) && (includeTKLiveSync ? File.directory?(tKLiveSyncXcframeworkDestPath) : true) then
+    puts "#{loggingPrefix} ✅ Found both NativeScript.xcframework and TNSWidgets.xcframework #{includeTKLiveSync ? "(and TKLiveSync.xcframework)" : ""} in \"#{nativeScriptIosFrameworksExtractedDestPath}\", so will skip unzipping of \"#{nativeScriptIosFrameworksSourcePath}\"."
   else
     puts "#{loggingPrefix} ℹ️  Missing NativeScript iOS xcframeworks, so will unzip them from \"#{nativeScriptIosFrameworksSourcePath}\" into \"#{nativeScriptIosFrameworksExtractedDestPath}\" ..."
 
     if !File.file?(nativeScriptIosFrameworksSourcePath) then
-      puts "#{loggingPrefix} ❌ NativeScript.xcframework and TKLiveSync.xcframework were both missing at \"#{nativeScriptIosFrameworksExtractedDestPath}\", so need to unzip \"#{nativeScriptIosFrameworksSourcePath}\"; however, that zip file is missing. Please run `npm install --save @nativescript/ios` again and then try repeating `pod install`. Also, if not using the default options, ensure that the correct nativescriptIosPath option is passed into use_nativescript!() in your app's Podfile."
+      puts "#{loggingPrefix} ❌ NativeScript.xcframework and TNSWidgets.xcframework #{includeTKLiveSync ? "(and TKLiveSync.xcframework)" : ""} were both missing at \"#{nativeScriptIosFrameworksExtractedDestPath}\", so need to unzip \"#{nativeScriptIosFrameworksSourcePath}\"; however, that zip file is missing. Please run `npm install --save @nativescript/ios` again and then try repeating `pod install`. Also, if not using the default options, ensure that the correct nativescriptIosPath option is passed into use_nativescript!() in your app's Podfile."
       exit(1)
     end
   
@@ -109,12 +120,6 @@ def use_nativescript(options={})
         exit 1
       end
     }
-
-    if(!includeTKLiveSync && File.directory?(tKLiveSyncXcframeworkDestPath)) then
-      FileUtils.rm(tKLiveSyncXcframeworkDestPath)
-      # We won't be supporting LiveSync for the initial proof of concept, so no need to clutter up their project with it.
-      puts "#{loggingPrefix} ✅ Removed TKLiveSync.xcframework from unzipped contents."
-    end
   end
 
   puts "#{loggingPrefix} ℹ️  Will now start preparing the Xcode project..."
@@ -125,14 +130,6 @@ def use_nativescript(options={})
     puts "#{loggingPrefix} ℹ️  Missing the NativeScript iOS meta folder (named \"NativeScript\") at \"#{nativeScriptIosRuntimeMetaDirectoryDestPath}\", so will copy it from \"#{nativeScriptIosRuntimeMetaDirectorySourcePath}\"."
     FileUtils.cp_r(nativeScriptIosRuntimeMetaDirectorySourcePath, nativeScriptIosRuntimeMetaDirectoryDestParentPath)
     puts "#{loggingPrefix} ✅ Successfully copied the NativeScript iOS meta folder to \"#{nativeScriptIosRuntimeMetaDirectorySourcePath}\"."
-  end
-
-  if File.directory?(tnsWidgetsXcframeworkDestPath) then
-    puts "#{loggingPrefix} ✅ Found TNSWidgets.xcframework at \"#{tnsWidgetsXcframeworkDestPath}\", so will skip copying it."
-  else
-    puts "#{loggingPrefix} ℹ️  Missing TNSWidgets.xcframework at \"#{tnsWidgetsXcframeworkDestPath}\", so will copy it from \"#{tnsWidgetsSourcePath}\"."
-    FileUtils.cp_r(tnsWidgetsSourcePath, tnsWidgetsXcframeworkDestParentPath)
-    puts "#{loggingPrefix} ✅ Successfully copied TNSWidgets.xcframework to \"#{tnsWidgetsSourcePath}\"."
   end
 
   projectTarget = project.targets.find { |target| target.name == options[:projectTargetName] }
@@ -268,9 +265,9 @@ def use_nativescript(options={})
     puts "#{loggingPrefix} ✅ Added \"NativeScript Embed Frameworks\" build phase."
   end
 
-  nativeScriptMetaGroup = project.groups.find { |ref| defined?(ref.name) && ref.name == "NativeScriptMeta" }
+  nativeScriptMetaGroup = project.groups.find { |ref| defined?(ref.name) && ref.name == "NativeScript" }
   if(nativeScriptMetaGroup.nil?)
-    nativeScriptMetaGroup = project.new_group("NativeScriptMeta", nativeScriptIosRuntimeMetaDirectoryDestPath);
+    nativeScriptMetaGroup = project.new_group("NativeScript", nativeScriptIosRuntimeMetaDirectoryDestPath);
 
     Dir.entries(nativeScriptIosRuntimeMetaDirectoryDestPath).select { |entry| !entry.start_with? "." }.each { |entry| nativeScriptMetaGroup.new_file(entry) }
     puts "#{loggingPrefix} ✅ Added file reference to NativeScript meta directory."

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -60,21 +60,21 @@
 		00E356EE1AD99517003FC87E /* NativescriptRuntimeExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NativescriptRuntimeExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* NativescriptRuntimeExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NativescriptRuntimeExampleTests.m; sourceTree = "<group>"; };
+		03A13711C176F9E5FE8C9C53 /* Runtime.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = Runtime.m; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* NativescriptRuntimeExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NativescriptRuntimeExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = NativescriptRuntimeExample/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = NativescriptRuntimeExample/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = NativescriptRuntimeExample/AppDelegate.m; sourceTree = "<group>"; tabWidth = 2; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NativescriptRuntimeExample/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = NativescriptRuntimeExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = NativescriptRuntimeExample/main.m; sourceTree = "<group>"; };
-		153198D7CCA86575A050502B /* TNSWidgets.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = TNSWidgets.xcframework; sourceTree = "<group>"; };
+		153198D7CCA86575A050502B /* TNSWidgets.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = TNSWidgets.xcframework; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* NativescriptRuntimeExample-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NativescriptRuntimeExample-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* NativescriptRuntimeExample-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NativescriptRuntimeExample-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F07903C4FC59A869E0A87E9 /* App-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "App-Bridging-Header.h"; sourceTree = "<group>"; };
+		45567EBAA7DE47958FD4D610 /* Runtime.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Runtime.h; sourceTree = "<group>"; };
 		47F7ED3B7971BE374F7B8635 /* Pods-NativescriptRuntimeExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NativescriptRuntimeExample.debug.xcconfig"; path = "Target Support Files/Pods-NativescriptRuntimeExample/Pods-NativescriptRuntimeExample.debug.xcconfig"; sourceTree = "<group>"; };
-		5323D4086059983F7DECE56F /* NativeScript.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = NativeScript.xcframework; sourceTree = "<group>"; };
-		6D1C0BEF240F99397F11FC9A /* Runtime.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Runtime.h; sourceTree = "<group>"; };
+		5323D4086059983F7DECE56F /* NativeScript.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = NativeScript.xcframework; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = NativescriptRuntimeExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		AD6F2DAC5924705A9A33CF69 /* Runtime.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = Runtime.m; sourceTree = "<group>"; };
-		B99BFC5C4666A8185FDEBCD1 /* App-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "App-Bridging-Header.h"; sourceTree = "<group>"; };
 		CA3E69C5B9553B26FBA2DF04 /* libPods-NativescriptRuntimeExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NativescriptRuntimeExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E00ACF0FDA8BF921659E2F9A /* Pods-NativescriptRuntimeExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NativescriptRuntimeExample.release.xcconfig"; path = "Target Support Files/Pods-NativescriptRuntimeExample/Pods-NativescriptRuntimeExample.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -184,7 +184,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				6B9684456A2045ADE5A6E47E /* Pods */,
-				E2068D50B6F88A7DCCFE52CB /* NativeScriptMeta */,
+				943CC6361CA90D13E2A14914 /* NativeScript */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -202,14 +202,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E2068D50B6F88A7DCCFE52CB /* NativeScriptMeta */ = {
+		943CC6361CA90D13E2A14914 /* NativeScript */ = {
 			isa = PBXGroup;
 			children = (
-				AD6F2DAC5924705A9A33CF69 /* Runtime.m */,
-				6D1C0BEF240F99397F11FC9A /* Runtime.h */,
-				B99BFC5C4666A8185FDEBCD1 /* App-Bridging-Header.h */,
+				03A13711C176F9E5FE8C9C53 /* Runtime.m */,
+				45567EBAA7DE47958FD4D610 /* Runtime.h */,
+				2F07903C4FC59A869E0A87E9 /* App-Bridging-Header.h */,
 			);
-			name = NativeScriptMeta;
 			path = NativeScript;
 			sourceTree = "<group>";
 		};
@@ -601,7 +600,11 @@
 				);
 				INFOPLIST_FILE = NativescriptRuntimeExampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -620,7 +623,11 @@
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = NativescriptRuntimeExampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -645,29 +652,24 @@
 					"\"$(SRCROOT)/NativeScript\"",
 				);
 				INFOPLIST_FILE = NativescriptRuntimeExample/Info.plist;
-				LD = "$SRCROOT/internal/nsld.sh";
-				LDPLUSPLUS = "$SRCROOT/internal/nsld.sh";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD = $SRCROOT/internal/nsld.sh;
+				LDPLUSPLUS = $SRCROOT/internal/nsld.sh;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
-					false,
-					"-framework",
-					Capacitor,
-					"-framework",
-					Cordova,
-					"-framework",
-					WebKit,
-					"$(inherited)",
 					"-ObjC",
 					"-sectcreate",
 					__DATA,
 					__TNSMetadata,
-					"$(CONFIGURATION_BUILD_DIR)/metadata-$(CURRENT_ARCH).bin",
+					"\"$(CONFIGURATION_BUILD_DIR)/metadata-$(CURRENT_ARCH).bin\"",
 					"-framework",
 					NativeScript,
-					"-F$(SRCROOT)/internal",
+					"-F\"$(SRCROOT)/internal\"",
 					"-licucore",
 					"-lz",
 					"-lc++",
@@ -704,29 +706,24 @@
 					"\"$(SRCROOT)/NativeScript\"",
 				);
 				INFOPLIST_FILE = NativescriptRuntimeExample/Info.plist;
-				LD = "$SRCROOT/internal/nsld.sh";
-				LDPLUSPLUS = "$SRCROOT/internal/nsld.sh";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD = $SRCROOT/internal/nsld.sh;
+				LDPLUSPLUS = $SRCROOT/internal/nsld.sh;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
-					false,
-					"-framework",
-					Capacitor,
-					"-framework",
-					Cordova,
-					"-framework",
-					WebKit,
-					"$(inherited)",
 					"-ObjC",
 					"-sectcreate",
 					__DATA,
 					__TNSMetadata,
-					"$(CONFIGURATION_BUILD_DIR)/metadata-$(CURRENT_ARCH).bin",
+					"\"$(CONFIGURATION_BUILD_DIR)/metadata-$(CURRENT_ARCH).bin\"",
 					"-framework",
 					NativeScript,
-					"-F$(SRCROOT)/internal",
+					"-F\"$(SRCROOT)/internal\"",
 					"-licucore",
 					"-lz",
 					"-lc++",
@@ -762,7 +759,10 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "NativescriptRuntimeExample-tvOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -789,7 +789,10 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "NativescriptRuntimeExample-tvOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -815,7 +818,11 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "NativescriptRuntimeExample-tvOSTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -841,7 +848,11 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "NativescriptRuntimeExample-tvOSTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -903,7 +914,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
@@ -956,7 +970,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
