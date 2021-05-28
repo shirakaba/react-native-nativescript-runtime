@@ -170,10 +170,13 @@ def use_nativescript(options={})
   # "Compile Sources" phase (there are strictly 0-1 of these)
   compileSourcesPhaseIndex = projectTarget.build_phases.index { |phase| phase.instance_of? Xcodeproj::Project::Object::PBXSourcesBuildPhase }
   if(compileSourcesPhaseIndex.nil?)
-    puts "#{loggingPrefix} ⚠️ Attempting to sort NativeScript prebuild phase, but there is no \"Compile Sources\" phase to place it before. Will instead place it as the first build step."
-    compileSourcesPhaseIndex = 0
+    # puts "#{loggingPrefix} ⚠️ Attempting to sort NativeScript prebuild phase, but there is no \"Compile Sources\" phase to place it before. Will instead place it as the first build step."
+    # compileSourcesPhaseIndex = 0
+    puts "#{loggingPrefix} ❌ Unable to compile NativeScript frameworks as there is no compile sources phase set up yet. Please add it into your Xcode project's build phases via the option \"New Compile Sources Phase\", then try repeating `pod install`."
+    exit(1)
   end
-
+  compileSourcesPhase = projectTarget.build_phases[compileSourcesPhaseIndex]
+  
   if(doPostbuild) then
     # Place the postbuild 
     postbuildPhaseIndex = projectTarget.build_phases.index { |phase| defined?(phase.name) && phase.name == postbuildPhaseName }
@@ -205,7 +208,7 @@ def use_nativescript(options={})
 
   linkingPhase = projectTarget.build_phases.find { |phase| phase.instance_of? Xcodeproj::Project::Object::PBXFrameworksBuildPhase }
   if(linkingPhaseIndex.nil?)
-    puts "#{loggingPrefix} ❌ Unable to link NativeScript frameworks as there is no linking phase set up yet. Please add it into your Xcode project's build phases via the option \"New Link Binary With Libraries phase\", then try repeating `pod install`."
+    puts "#{loggingPrefix} ❌ Unable to link NativeScript frameworks as there is no linking phase set up yet. Please add it into your Xcode project's build phases via the option \"New Link Binary With Libraries Phase\", then try repeating `pod install`."
     exit(1)
   end
 
@@ -275,6 +278,15 @@ def use_nativescript(options={})
     # I was thinking of attempt to update the path, but it seems to result in an uglier file path than the new_group() API gives you.
     # nativeScriptMetaGroup.path = nativeScriptIosRuntimeMetaDirectoryDestPath
   end
+  nativeScriptMetaGroup.files.each { |fileRef|
+    # Based on: https://github.com/NativeScript/nativescript-dev-xcode/blob/a7f032722d0edab445598bc8602ef49d4640151e/lib/pbxProject.js#L618
+    # Note that we don't recurse down the group. Hopefully it remains as a flat structure.
+    file_type = fileRef.last_known_file_type
+    if (file_type.start_with? "sourcecode.") && !(file_type.end_with? ".h") && file_type != Xcodeproj::Constants::FILE_TYPES_BY_EXTENSION["plist"] && file_type != Xcodeproj::Constants::FILE_TYPES_BY_EXTENSION["modulemap"] then
+      # The true param avoids duplicates.
+      compileSourcesPhase.add_file_reference(fileRef, true)
+    end
+  }
 
   projectTarget.build_configurations.each { |config|
     puts "#{loggingPrefix} ℹ️  Inspecting BUILD_SETTINGS for projectTarget => #{projectTarget.name} & CONFIGURATION => #{config.name}"
