@@ -9,8 +9,10 @@
     "start": "react-native start"
   },
   "dependencies": {
+    "@nativescript/ios": "^8.0.0",
     "react": "16.13.1",
-    "react-native": "0.63.4"
+    "react-native": "0.63.4",
+    "react-native-nativescript-runtime": "file:.."
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
