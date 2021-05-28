@@ -13,6 +13,7 @@ ios/NativeScript
 ios/NativeScript.xcframework
 ios/TNSWidgets.xcframework
 ios/TKLiveSync.xcframework
+ios/__MACOSX
 ios/.build*
 src/nativescript/node_modules
 src/nativescript/package-lock.json
