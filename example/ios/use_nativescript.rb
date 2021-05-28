@@ -370,16 +370,22 @@ def use_nativescript(options={})
       return false
     end
 
-    if(!array_includes_array(config.build_settings["OTHER_LDFLAGS"] ||= [], nativeScriptLdFlags)) then
-      puts "#{loggingPrefix} ℹ️  Existing OTHER_LDFLAGS: #{config.build_settings[:OTHER_LDFLAGS]}"
+    # If the Xcode build gives the error "Command Ld failed", then it's probably due to a poor update of OTHER_LDFLAGS here:
+    existing_OTHER_LDFLAGS = config.build_settings["OTHER_LDFLAGS"] ||= []
+    if(!array_includes_array(existing_OTHER_LDFLAGS, nativeScriptLdFlags)) then
+      puts "#{loggingPrefix} ℹ️  Existing OTHER_LDFLAGS: #{existing_OTHER_LDFLAGS}"
       # Initial state:
       # "OTHER_LDFLAGS"=>["$(inherited)", "-ObjC", "-lc++"]
+      puts "#{loggingPrefix} ℹ️  Planned OTHER_LDFLAGS subarray 1/3: #{existing_OTHER_LDFLAGS}"
+      puts "#{loggingPrefix} ℹ️  Planned OTHER_LDFLAGS subarray 2/3: #{(existing_OTHER_LDFLAGS.include? "$(inherited)") ? [] : ["$(inherited)"]}"
+      puts "#{loggingPrefix} ℹ️  Planned OTHER_LDFLAGS subarray 3/3: #{nativeScriptLdFlags}"
+
       config.build_settings["OTHER_LDFLAGS"] = [
-        *(config.build_settings["OTHER_LDFLAGS"] ||= []),
-        *(config.build_settings["OTHER_LDFLAGS"].include? "$(inherited)" ? [] : ["$(inherited)"]),
+        *existing_OTHER_LDFLAGS,
+        *((existing_OTHER_LDFLAGS.include? "$(inherited)") ? [] : ["$(inherited)"]),
         *nativeScriptLdFlags
       ]
-      puts "#{loggingPrefix} ✅ Updated OTHER_LDFLAGS: #{config.build_settings[:OTHER_LDFLAGS]}"
+      puts "#{loggingPrefix} ✅ Updated OTHER_LDFLAGS: #{config.build_settings["OTHER_LDFLAGS"]}"
     end
 
     config.build_settings["LD"] = "$SRCROOT/internal/nsld.sh"
