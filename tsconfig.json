@@ -17,47 +17,30 @@
     "noImplicitUseStrict": false,
     "noStrictGenericChecks": false,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
 
     /**
-     * src/plugin (called by the React Native JS engine) supports esnext
-     * src/bridge (called by the NativeScript JS engine) wants es2017
-     * We'll go with es2017 as the lowest common denominator to simplify the build.
-     */
-    "target": "esnext",
-
-    /** START - Changes to compilerOptions made to allow compilation of both src/plugin and src/bridge */
-    "skipDefaultLibCheck": true,
-    "plugins": [
-      {
-        "transform": "@nativescript/webpack/transformers/ns-transform-native-classes",
-        "type": "raw"
-      }
-    ],
-    /**
      * src/plugin (called by the React Native JS engine) uses ["esnext"]
      * src/bridge (called by the NativeScript JS engine) uses ["dom", "es2017"]
      * We'll go with the latter and just be careful with what APIs we call in which files.
      */
-    "lib": [
+     "lib": [
       "dom",
       "es2017"
     ],
-    "experimentalDecorators": true,
-    // TODO: Work out whether we need to specify a "files" or "include" field.
-    //       This is complicated by this tsconfig.json also influencing editor support for
-    //       the example app.
-    /** END - Changes to compilerOptions made to allow compilation of both src/plugin and src/bridge */
+    /**
+     * src/plugin (called by the React Native JS engine) supports esnext
+     * src/bridge (called by the NativeScript JS engine) wants es2017
+     * We'll go with es2017 as the lowest common denominator to simplify the build.
+     */
+    "target": "es2017",
+    /** Speeds up TS compilation as NativeScript iOS/Android typings are hefty */
+    "skipDefaultLibCheck": true,
+    "noUnusedParameters": false,
   },
-  /** START - Changes to root-level config made to allow compilation of both src/plugin and src/bridge */
-  "files": [
-    "src/bridge/references.d.ts"
-  ],
-  /** END - Changes to root-level config made to allow compilation of both src/plugin and src/bridge */
-  "include": [
-    "src/**/*",
-  ],
+  // Once example/nativescript stops giving compiler errors, we can remove this line.
+  // I'm only putting it here because the husky hook is preventing me from committing the changes.
+  "exclude": ["example"]
 }

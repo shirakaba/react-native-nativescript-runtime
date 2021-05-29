@@ -10,7 +10,6 @@
   "files": [
     "src",
     "resources",
-    "!src/bridge/references.d.ts",
     "lib",
     "android",
     "ios",
@@ -50,6 +49,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
+    "@babel/plugin-transform-classes": "^7.14.4",
     "@commitlint/config-conventional": "^11.0.0",
     "@nativescript/core": "^8.0.6",
     "@nativescript/types-android": "^8.0.1",
@@ -73,7 +73,6 @@
     "react-native": "0.63.4",
     "react-native-builder-bob": "^0.18.0",
     "release-it": "^14.2.2",
-    "ts-patch": "^1.3.3",
     "typescript": "^4.1.3"
   },
   "peerDependencies": {
@@ -131,12 +130,16 @@
           "trailingComma": "es5",
           "useTabs": false
         }
-      ]
+      ],
+      "no-undef": "off"
     }
   },
   "eslintIgnore": [
     "node_modules/",
-    "lib/"
+    "lib/",
+    "src/bridge/",
+    "resources/webpack.config.js",
+    "example/nativescript"
   ],
   "prettier": {
     "quoteProps": "consistent",
