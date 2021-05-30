@@ -1,7 +1,7 @@
 import {
   iosRootViewController,
   androidCreateDialog,
-} from 'react-native-nativescript-runtime';
+} from 'react-native-nativescript-runtime/lib/module/bridge';
 
 /**
  * Try calling from Ionic with:

@@ -2,7 +2,7 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "declaration": false,
+    "declaration": true,
     "outDir": "./lib/module",
     "module": "ES6"
   },

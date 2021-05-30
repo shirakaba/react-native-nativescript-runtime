@@ -1,5 +1,5 @@
 // init - keep here.
-import 'react-native-nativescript-runtime';
+import 'react-native-nativescript-runtime/lib/module/bridge';
 
 /**
  *      ****       ****
