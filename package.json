@@ -152,8 +152,8 @@
     "source": "src",
     "output": "lib",
     "targets": [
-      "commonjs",
-      "module",
+      ["commonjs", { "configFile": "./babel.config.commonjs.js" }],
+      ["module", { "configFile": "./babel.config.module.js" }],
       [
         "typescript",
         {
