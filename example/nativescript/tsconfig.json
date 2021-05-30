@@ -1,0 +1,46 @@
+/**
+ * This tsconfig.json is specifically configured for NativeScript. Hopefully it doesn't conflict with React Native development.
+ * If you do have a root-level tsconfig.json for your React Native app code, and you're getting conflicts, try adding:
+ *   "./nativescript"
+ * ...to the exclude patterns of that tsconfig.json.
+ * If you don't yet have a React Native tsconfig.json, you could use the Expo one as a base:
+ * @see https://github.com/expo/expo/blob/2eebaeaca82cff98ee3c595fb008dd9fdd342728/packages/expo-module-scripts/tsconfig.base.json
+ */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": "./",
+    "outDir": "build",
+    "sourceMap": false,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    // The Capacitor template uses commonjs
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    // The Capacitor template uses es2015
+    "target": "es2017",
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "plugins": [
+      {
+        "transform": "@nativescript/webpack/transformers/ns-transform-native-classes",
+        "type": "raw"
+      }
+    ],
+  },
+  "files": ["./references.d.ts"],
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "./node_modules",
+    "../node_modules"
+  ]
+}

@@ -1,0 +1,10 @@
+
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "declaration": false,
+    "outDir": "./lib/module",
+    "module": "ES6"
+  },
+  "exclude": ["example", "**/__tests__"]
+}

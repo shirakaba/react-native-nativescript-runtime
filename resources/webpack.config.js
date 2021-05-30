@@ -2,17 +2,26 @@ const { join, relative, resolve, sep } = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const hashSalt = Date.now().toString();
-const projectDir = join(__dirname, '../../../../');
 
-module.exports = env => {
+// FIXME: Restructure react-native-nativescript-runtime to allow importing other than at the root (as the root pulls in react-native and evidently isn't tree-shaken out)
+module.exports = (env, argv) => {
   env = env || {};
-  const { distFolder, production, uglify } = env;
+  const {
+    "project-dir": _projectDir,
+    "nativescript-root": _nativescriptRoot,
+    production,
+    uglify
+  } = env;
 
-  const srcContext = resolve(join(projectDir, 'src', 'nativescript'));
-  const tsConfigPath = resolve(join(srcContext, 'tsconfig.json'));
+  const projectDir = resolve(_projectDir);
+  const nativescriptRoot = resolve(_nativescriptRoot);
+
+  const srcContext = resolve(join(nativescriptRoot, 'src'));
+
+  const tsConfigPath = resolve(join(nativescriptRoot, 'tsconfig.json'));
   const coreModulesPackageName = '@nativescript/core';
   const alias = env.alias || {};
-  const dist = resolve(join(projectDir, distFolder || 'www', 'nativescript'));
+  const dist = resolve(join(nativescriptRoot, "build"));
   const itemsToClean = [`${dist}/*`];
 
   const config = {
@@ -105,7 +114,7 @@ module.exports = env => {
               },
               getCustomTransformers: program => ({
                 before: [
-                  require('../../webpack/transformers/ns-transform-native-classes')
+                  require('@nativescript/webpack/transformers/ns-transform-native-classes')
                     .default,
                 ],
               }),

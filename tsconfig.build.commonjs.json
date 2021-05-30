@@ -1,0 +1,10 @@
+
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "declaration": false,
+    "outDir": "./lib/commonjs",
+    "module": "CommonJS"
+  },
+  "exclude": ["example", "**/__tests__"]
+}

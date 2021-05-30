@@ -4,6 +4,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "build:nativescript": "webpack --config=node_modules/react-native-nativescript-runtime/resources/webpack.config.js --env project-dir=. --env nativescript-root=./nativescript",
+    "build:mobile": "npm-run-all build build:nativescript",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start"
@@ -17,7 +19,12 @@
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/runtime": "^7.12.5",
+    "@nativescript/core": "^8.0.6",
+    "@nativescript/types-android": "^8.0.1",
+    "@nativescript/types-ios": "^8.0.1",
     "babel-plugin-module-resolver": "^4.0.0",
-    "metro-react-native-babel-preset": "^0.64.0"
+    "metro-react-native-babel-preset": "^0.64.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^4.7.0"
   }
 }
