@@ -4,6 +4,7 @@
     "paths": {
       "react-native-nativescript-runtime": ["./src/index"]
     },
+    "sourceMap": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,
@@ -26,9 +27,15 @@
      * src/bridge (called by the NativeScript JS engine) uses ["dom", "es2017"]
      * We'll go with the latter and just be careful with what APIs we call in which files.
      */
-     "lib": [
+    "lib": [
       "dom",
       "es2017"
+    ],
+    "plugins": [
+      {
+        "transform": "@nativescript/webpack/transformers/ns-transform-native-classes",
+        "type": "raw"
+      }
     ],
     /**
      * src/plugin (called by the React Native JS engine) supports esnext
