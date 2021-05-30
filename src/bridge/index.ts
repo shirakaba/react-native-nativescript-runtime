@@ -511,12 +511,7 @@ function ensureBroadCastReceiverClass() {
     return;
   }
 
-  /*
-   * If we were building with TypeScript, we'd simply use the @NativeClass() decorator.
-   * However, Bob plugins build with Babel, and we don't have a Babel transform for this.
-   * So instead, we'll simply use @babel/plugin-transform-classes for all our classes.
-   */
-  // @NativeClass()
+  @NativeClass()
   class BroadcastReceiver
     extends android.content.BroadcastReceiver
     implements IBroadcastReceiver
@@ -623,12 +618,7 @@ declare class IDialogImplClass extends android.app.Dialog {
 let DialogImpl: typeof IDialogImplClass;
 let DialogFragmentImpl: typeof IDialogFragmentImplClass;
 if (global.android) {
-  /*
-   * If we were building with TypeScript, we'd simply use the @NativeClass() decorator.
-   * However, Bob plugins build with Babel, and we don't have a Babel transform for this.
-   * So instead, we'll simply use @babel/plugin-transform-classes for all our classes.
-   */
-  // @NativeClass()
+  @NativeClass()
   class DialogImplClass extends android.app.Dialog implements IDialogImplClass {
     constructor(
       fragment: any,
@@ -642,12 +632,7 @@ if (global.android) {
 
   DialogImpl = DialogImplClass;
 
-  /*
-   * If we were building with TypeScript, we'd simply use the @NativeClass() decorator.
-   * However, Bob plugins build with Babel, and we don't have a Babel transform for this.
-   * So instead, we'll simply use @babel/plugin-transform-classes for all our classes.
-   */
-  // @NativeClass()
+  @NativeClass()
   class DialogFragmentImplClass
     extends androidx.fragment.app.DialogFragment
     implements IDialogFragmentImplClass
