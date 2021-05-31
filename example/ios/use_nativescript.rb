@@ -69,6 +69,8 @@ def use_nativescript(options={})
   nativeScriptIosFrameworksSourcePath = File.join(nativeScriptRuntimeNodeModulePath, "ios", "XCFrameworks.zip")
   nativeScriptIosFrameworksExtractedDestPath = scriptDirPath
   nativeScriptXcframeworkDestPath = File.join(scriptDirPath, "NativeScript.xcframework")
+  nativeScriptUserBundleDirPath = File.expand_path(File.join(scriptDirPath, "..", "nativescript", "build"))
+  nativeScriptUserBundleFilePath = File.expand_path(File.join(scriptDirPath, "..", "nativescript", "build", "index.js"))
 
   tKLiveSyncXcframeworkDestPath = File.join(scriptDirPath, "TKLiveSync.xcframework")
 
@@ -268,6 +270,45 @@ def use_nativescript(options={})
     puts "#{loggingPrefix} ✅ Added \"NativeScript Embed Frameworks\" build phase."
   end
 
+  nativeScriptUserGroup = project.groups.find { |ref| defined?(ref.name) && ref.name == "NativeScriptUser" }
+  if(nativeScriptUserGroup.nil?)
+    nativeScriptUserGroup = project.new_group("NativeScriptUser", nativeScriptUserBundleDirPath);
+    puts "#{loggingPrefix} ✅ Added the \"NativeScriptUser\" group."
+  end
+  puts("nativeScriptUserGroup.files #{nativeScriptUserGroup.files}")
+
+  nativeScriptUserBundleFileRef = nativeScriptUserGroup.files.find { |ref| ref.file_ref.path.end_with? "index.js" }
+  if(nativeScriptUserBundleFileRef.nil?)
+    # nativeScriptUserBundleFileRef = nativeScriptUserGroup.new_file("index.js")
+    nativeScriptUserBundleFileRef = nativeScriptUserGroup.new_file(nativeScriptUserBundleFilePath)
+    puts "#{loggingPrefix} ✅ Added file reference to the NativeScript user bundle."
+  end
+
+
+  # PBXResourcesBuildPhase
+  resourcesPhase = projectTarget.resources_build_phase
+  if(resourcesPhase.nil?)
+    puts "#{loggingPrefix} ❌ Unable to add NativeScript built code bundle as there is no Copy Bundle Resources set up yet. Please add it into your Xcode project's build phases via the option \"New Copy Bundle Resources Phase\", then try repeating `pod install`."
+    exit(1)
+  end
+
+  # nativeScriptUserBundleFileRef = resourcesPhase.files.find { |ref| ref.file_ref.path.end_with? "nativescript/build" }
+  # if(nativeScriptUserBundleFileRef.nil?)
+  #   nativeScriptUserBundleFileRef = nativeScriptUserGroup.new_file(nativeScriptUserBundleFilePath)
+  #   puts "#{loggingPrefix} ✅ Added file reference to the NativeScript user bundle."
+  # end
+  
+  puts "#{loggingPrefix} resourcesPhase.files: #{resourcesPhase.files}"
+  if(!resourcesPhase.files.any? { |ref| ref.file_ref.path.end_with? "nativescript/build/index.js" })
+    # puts "#{loggingPrefix} resourcesPhase.files: #{resourcesPhase.files}"
+    # projectTarget.add_resources(nativeScriptUserBundleFileRef)
+    resourcesPhase.add_file_reference(nativeScriptUserBundleFileRef)
+    puts "#{loggingPrefix} ✅ Added the NativeScript user bundle to the Copy Bundle Resources phase."
+  else
+    puts "#{loggingPrefix} ✅ NativeScript user bundle was found in the Copy Bundle Resources phase."
+  end
+
+  puts "#{loggingPrefix} project.groups: #{project.groups}"
   nativeScriptMetaGroup = project.groups.find { |ref| defined?(ref.name) && ref.name == "NativeScript" }
   if(nativeScriptMetaGroup.nil?)
     nativeScriptMetaGroup = project.new_group("NativeScript", nativeScriptIosRuntimeMetaDirectoryDestPath);
@@ -278,6 +319,8 @@ def use_nativescript(options={})
     # I was thinking of attempt to update the path, but it seems to result in an uglier file path than the new_group() API gives you.
     # nativeScriptMetaGroup.path = nativeScriptIosRuntimeMetaDirectoryDestPath
   end
+  puts "#{loggingPrefix} nativeScriptMetaGroup: #{nativeScriptMetaGroup}"
+  puts "#{loggingPrefix} nativeScriptMetaGroup.files: #{nativeScriptMetaGroup.files}"
   nativeScriptMetaGroup.files.each { |fileRef|
     # Based on: https://github.com/NativeScript/nativescript-dev-xcode/blob/a7f032722d0edab445598bc8602ef49d4640151e/lib/pbxProject.js#L618
     # Note that we don't recurse down the group. Hopefully it remains as a flat structure.

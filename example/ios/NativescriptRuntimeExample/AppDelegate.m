@@ -42,8 +42,7 @@ static void InitializeFlipper(UIApplication *application) {
   void *pointer = runtimeMeta();
   [TNSRuntime initializeMetadata:pointer];
   self.runtime = [[TNSRuntime alloc] initWithApplicationPath:[[NSBundle mainBundle] bundlePath]];
-  // TODO: include a bundle to execute
-  // [self.runtime executeModule:@"../public/nativescript/index.js"];
+  [self.runtime executeModule:@"../nativescript/build/index.js"];
   // END NativeScript runtime
   
   #ifdef FB_SONARKIT_ENABLED
