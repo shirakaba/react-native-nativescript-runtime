@@ -13,7 +13,7 @@ const NS_MARSHALL_CALLBACK = 7;
 
 const NS_MARSHALL_CONSOLE = 1000;
 
-declare var NativeScriptCapPlugin: any, org: any, com: any;
+// declare var NativeScriptCapPlugin: any, org: any, com: any;
 
 let NativeBridge;
 class NativeInterface {
@@ -35,53 +35,53 @@ class NativeInterface {
     this._source = null;
 
     if (NS_IS_TESTING_HARNESS) {
-      this.sendResponse = (msg: any) => {
-        (<any>window).NativeScriptCap.sendResponse(msg);
-      };
-      (<any>window).NativeScriptCap.addListener(
-        'toNativeScript',
-        (msg: any) => {
-          let newMsg = JSON.parse(msg.value);
-          this.handleMessage({ data: newMsg });
-        }
-      );
+      // this.sendResponse = (msg: any) => {
+      //   (<any>window).NativeScriptCap.sendResponse(msg);
+      // };
+      // (<any>window).NativeScriptCap.addListener(
+      //   'toNativeScript',
+      //   (msg: any) => {
+      //     let newMsg = JSON.parse(msg.value);
+      //     this.handleMessage({ data: newMsg });
+      //   }
+      // );
       return;
     }
 
-    // @ts-ignore
-    if (global.android) {
-      this.sendResponse = this._sendResponseAndroid;
-      this._listener = new (<any>(
-        org
-      )).nativescript.capacitor.NativeScriptCapPluginListener({
-        notify: (message: string) => {
-          // console.log('notify:', message)
-          NativeInterface.instance!.handleMessage({
-            data: JSON.parse(message),
-          });
-        },
-        setup: (instance: any) => {
-          // console.log('setup instance:', instance);
-          this._capacitor = instance;
-          global.androidCapacitorActivity = instance.getActivity();
-        },
-      });
-      (<any>org).nativescript.capacitor.NativeScriptCapPlugin.listener =
-        this._listener;
-    } else {
-      this.sendResponse = this._sendResponseIOS;
+    // // @ts-ignore
+    // if (global.android) {
+    //   this.sendResponse = this._sendResponseAndroid;
+    //   this._listener = new (<any>(
+    //     org
+    //   )).nativescript.capacitor.NativeScriptCapPluginListener({
+    //     notify: (message: string) => {
+    //       // console.log('notify:', message)
+    //       NativeInterface.instance!.handleMessage({
+    //         data: JSON.parse(message),
+    //       });
+    //     },
+    //     setup: (instance: any) => {
+    //       // console.log('setup instance:', instance);
+    //       this._capacitor = instance;
+    //       global.androidCapacitorActivity = instance.getActivity();
+    //     },
+    //   });
+    //   (<any>org).nativescript.capacitor.NativeScriptCapPlugin.listener =
+    //     this._listener;
+    // } else {
+    //   this.sendResponse = this._sendResponseIOS;
 
-      NativeScriptCapPlugin.setup(
-        (instance: any) => {
-          this._capacitor = instance;
-        },
-        (message: string) => {
-          NativeInterface.instance!.handleMessage({
-            data: JSON.parse(message),
-          });
-        }
-      );
-    }
+    //   NativeScriptCapPlugin.setup(
+    //     (instance: any) => {
+    //       this._capacitor = instance;
+    //     },
+    //     (message: string) => {
+    //       NativeInterface.instance!.handleMessage({
+    //         data: JSON.parse(message),
+    //       });
+    //     }
+    //   );
+    // }
   }
 
   _createCallback(value: string) {
@@ -176,14 +176,14 @@ class NativeInterface {
       console.error('Capacitor is not defined.');
       return;
     }
-    try {
-      this._capacitor.notifyListeners(
-        'fromNativeScript',
-        new com.getcapacitor.JSObject(JSON.stringify(msg))
-      );
-    } catch (err) {
-      console.error(err);
-    }
+    // try {
+    //   this._capacitor.notifyListeners(
+    //     'fromNativeScript',
+    //     new com.getcapacitor.JSObject(JSON.stringify(msg))
+    //   );
+    // } catch (err) {
+    //   console.error(err);
+    // }
   }
 
   _sendResponseIOS(msg: any) {
@@ -191,13 +191,13 @@ class NativeInterface {
       console.error('Capacitor is not defined.');
       return;
     }
-    if (this._debugging) {
-      console.log('Sending Response to ios', msg);
-    }
-    this._capacitor.notifyListenersData(
-      'fromNativeScript',
-      NSDictionary.dictionaryWithDictionary(msg)
-    );
+    // if (this._debugging) {
+    //   console.log('Sending Response to ios', msg);
+    // }
+    // this._capacitor.notifyListenersData(
+    //   'fromNativeScript',
+    //   NSDictionary.dictionaryWithDictionary(msg)
+    // );
   }
 
   /**
@@ -567,9 +567,9 @@ export const androidBroadcastReceiverRegister = (
     androidRegisteredReceivers[intentFilter] = receiver;
   };
 
-  if (global.androidCapacitorActivity) {
-    registerFunc(global.androidCapacitorActivity);
-  }
+  // if (global.androidCapacitorActivity) {
+  //   registerFunc(global.androidCapacitorActivity);
+  // }
 };
 
 export const androidBroadcastReceiverUnRegister = (
@@ -579,11 +579,11 @@ export const androidBroadcastReceiverUnRegister = (
     androidRegisteredReceivers = {};
   }
   const receiver = androidRegisteredReceivers[intentFilter];
-  if (receiver) {
-    global.androidCapacitorActivity.unregisterReceiver(receiver);
-    androidRegisteredReceivers[intentFilter] = undefined;
-    delete androidRegisteredReceivers[intentFilter];
-  }
+  // if (receiver) {
+  //   global.androidCapacitorActivity.unregisterReceiver(receiver);
+  //   androidRegisteredReceivers[intentFilter] = undefined;
+  //   delete androidRegisteredReceivers[intentFilter];
+  // }
 };
 
 /**

@@ -17,7 +17,6 @@
     "noImplicitReturns": true,
     "noImplicitUseStrict": false,
     "noStrictGenericChecks": false,
-    "noUnusedLocals": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
@@ -47,6 +46,7 @@
     "skipDefaultLibCheck": true,
     "noUnusedParameters": false,
     "experimentalDecorators": true,
+    "noUnusedLocals": false,
   },
   // Once example/nativescript stops giving compiler errors, we can remove this line.
   // I'm only putting it here because the husky hook is preventing me from committing the changes.
