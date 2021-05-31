@@ -42,7 +42,9 @@ static void InitializeFlipper(UIApplication *application) {
   void *pointer = runtimeMeta();
   [TNSRuntime initializeMetadata:pointer];
   self.runtime = [[TNSRuntime alloc] initWithApplicationPath:[[NSBundle mainBundle] bundlePath]];
-  [self.runtime executeModule:@"../nativescript/build/index.js"];
+  // Path is implicitly relative to a folder "app" in the root of the built NativescriptRuntimeExample.app product.
+  // nativescript-bundle.js is copied into the root of NativescriptRuntimeExample.app, so we have to step up by one directory to satisfy the path lookup.
+  [self.runtime executeModule:@"../nativescript-bundle.js"];
   // END NativeScript runtime
   
   #ifdef FB_SONARKIT_ENABLED
