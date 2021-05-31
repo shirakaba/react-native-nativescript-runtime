@@ -70,7 +70,7 @@ def use_nativescript(options={})
   nativeScriptIosFrameworksExtractedDestPath = scriptDirPath
   nativeScriptXcframeworkDestPath = File.join(scriptDirPath, "NativeScript.xcframework")
   nativeScriptUserBundleDirPath = File.expand_path(File.join(scriptDirPath, "..", "nativescript", "build"))
-  nativeScriptUserBundleFilePath = File.expand_path(File.join(scriptDirPath, "..", "nativescript", "build", "index.js"))
+  nativeScriptUserBundleFilePath = File.expand_path(File.join(scriptDirPath, "..", "nativescript", "build", "nativescript-bundle.js"))
 
   tKLiveSyncXcframeworkDestPath = File.join(scriptDirPath, "TKLiveSync.xcframework")
 
@@ -135,8 +135,6 @@ def use_nativescript(options={})
   end
 
   projectTarget = project.targets.find { |target| target.name == options[:projectTargetName] }
-  # puts "build_phases: #{projectTarget.build_phases}"
-  # puts "shell_script_build_phases: #{projectTarget.shell_script_build_phases}"
 
   # Prebuild
   prebuildPhaseName = "NativeScript prebuild"
@@ -270,18 +268,30 @@ def use_nativescript(options={})
     puts "#{loggingPrefix} ✅ Added \"NativeScript Embed Frameworks\" build phase."
   end
 
-  nativeScriptUserGroup = project.groups.find { |ref| defined?(ref.name) && ref.name == "NativeScriptUser" }
+  nativeScriptUserGroup = project.groups.find { |ref|
+    puts("project.group[i] #{ref}")
+    puts("project.group[i].name - defined: #{defined?(ref.name)}; nil: #{ref.name.nil?}; #{ref.name}")
+    puts("project.group[i].path - defined: #{defined?(ref.path)}; nil: #{ref.path.nil?}; #{ref.path}")
+    break ref if (!ref.name.nil? && ref.name == "NativeScriptUser")
+    break ref if (!ref.path.nil? && (ref.path.end_with? "nativescript/build"))
+    next
+  }
   if(nativeScriptUserGroup.nil?)
     nativeScriptUserGroup = project.new_group("NativeScriptUser", nativeScriptUserBundleDirPath);
     puts "#{loggingPrefix} ✅ Added the \"NativeScriptUser\" group."
+  else
+    puts "#{loggingPrefix} ✅ Found existing \"NativeScriptUser\" group."
   end
+  puts("nativeScriptUserGroup.children #{nativeScriptUserGroup.children}")
   puts("nativeScriptUserGroup.files #{nativeScriptUserGroup.files}")
 
-  nativeScriptUserBundleFileRef = nativeScriptUserGroup.files.find { |ref| ref.file_ref.path.end_with? "index.js" }
+  nativeScriptUserBundleFileRef = nativeScriptUserGroup.files.find { |ref| ref.path.end_with? "nativescript-bundle.js" }
   if(nativeScriptUserBundleFileRef.nil?)
-    # nativeScriptUserBundleFileRef = nativeScriptUserGroup.new_file("index.js")
+    # nativeScriptUserBundleFileRef = nativeScriptUserGroup.new_file("nativescript-bundle.js")
     nativeScriptUserBundleFileRef = nativeScriptUserGroup.new_file(nativeScriptUserBundleFilePath)
     puts "#{loggingPrefix} ✅ Added file reference to the NativeScript user bundle."
+  else
+    puts "#{loggingPrefix} ✅ Found file reference to the NativeScript user bundle."
   end
 
 
@@ -291,15 +301,9 @@ def use_nativescript(options={})
     puts "#{loggingPrefix} ❌ Unable to add NativeScript built code bundle as there is no Copy Bundle Resources set up yet. Please add it into your Xcode project's build phases via the option \"New Copy Bundle Resources Phase\", then try repeating `pod install`."
     exit(1)
   end
-
-  # nativeScriptUserBundleFileRef = resourcesPhase.files.find { |ref| ref.file_ref.path.end_with? "nativescript/build" }
-  # if(nativeScriptUserBundleFileRef.nil?)
-  #   nativeScriptUserBundleFileRef = nativeScriptUserGroup.new_file(nativeScriptUserBundleFilePath)
-  #   puts "#{loggingPrefix} ✅ Added file reference to the NativeScript user bundle."
-  # end
   
   puts "#{loggingPrefix} resourcesPhase.files: #{resourcesPhase.files}"
-  if(!resourcesPhase.files.any? { |ref| ref.file_ref.path.end_with? "nativescript/build/index.js" })
+  if(!resourcesPhase.files.any? { |ref| ref.file_ref.path.end_with? "nativescript-bundle.js" })
     # puts "#{loggingPrefix} resourcesPhase.files: #{resourcesPhase.files}"
     # projectTarget.add_resources(nativeScriptUserBundleFileRef)
     resourcesPhase.add_file_reference(nativeScriptUserBundleFileRef)
@@ -309,15 +313,18 @@ def use_nativescript(options={})
   end
 
   puts "#{loggingPrefix} project.groups: #{project.groups}"
-  nativeScriptMetaGroup = project.groups.find { |ref| defined?(ref.name) && ref.name == "NativeScript" }
+  nativeScriptMetaGroup = project.groups.find { |ref|
+    break ref if (!ref.name.nil? && ref.name == "NativeScript")
+    break ref if (!ref.path.nil? && ref.path == "NativeScript")
+    next
+  }
   if(nativeScriptMetaGroup.nil?)
     nativeScriptMetaGroup = project.new_group("NativeScript", nativeScriptIosRuntimeMetaDirectoryDestPath);
 
     Dir.entries(nativeScriptIosRuntimeMetaDirectoryDestPath).select { |entry| !entry.start_with? "." }.each { |entry| nativeScriptMetaGroup.new_file(entry) }
     puts "#{loggingPrefix} ✅ Added file reference to NativeScript meta directory."
   else
-    # I was thinking of attempt to update the path, but it seems to result in an uglier file path than the new_group() API gives you.
-    # nativeScriptMetaGroup.path = nativeScriptIosRuntimeMetaDirectoryDestPath
+    puts "#{loggingPrefix} ✅ Found existing NativeScript meta directory."
   end
   puts "#{loggingPrefix} nativeScriptMetaGroup: #{nativeScriptMetaGroup}"
   puts "#{loggingPrefix} nativeScriptMetaGroup.files: #{nativeScriptMetaGroup.files}"
@@ -327,6 +334,7 @@ def use_nativescript(options={})
     file_type = fileRef.last_known_file_type
     if (file_type.start_with? "sourcecode.") && !(file_type.end_with? ".h") && file_type != Xcodeproj::Constants::FILE_TYPES_BY_EXTENSION["plist"] && file_type != Xcodeproj::Constants::FILE_TYPES_BY_EXTENSION["modulemap"] then
       # The true param avoids duplicates.
+      # FIXME: Actually, it's bugged.
       compileSourcesPhase.add_file_reference(fileRef, true)
     end
   }

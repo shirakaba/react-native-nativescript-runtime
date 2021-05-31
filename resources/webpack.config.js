@@ -34,7 +34,7 @@ module.exports = (env, argv) => {
       pathinfo: false,
       path: dist,
       libraryTarget: 'commonjs2',
-      filename: '[name].js',
+      filename: 'nativescript-bundle.js',
       globalObject: 'global',
       hashSalt,
     },

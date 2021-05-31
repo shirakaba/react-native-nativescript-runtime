@@ -8,16 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* NativescriptRuntimeExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* NativescriptRuntimeExampleTests.m */; };
+		06862E4429FA61F356881D85 /* nativescript-bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = 67AE4947B5C270277472FB2A /* nativescript-bundle.js */; };
 		0880E3FFCB538763244EC1C6 /* NativeScript.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323D4086059983F7DECE56F /* NativeScript.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		229AB067BC140A02EC89F74E /* Runtime.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADB643EBA17A21823759017 /* Runtime.m */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* NativescriptRuntimeExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* NativescriptRuntimeExampleTests.m */; };
 		4C39C56BAD484C67AA576FFA /* libPods-NativescriptRuntimeExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA3E69C5B9553B26FBA2DF04 /* libPods-NativescriptRuntimeExample.a */; };
+		617D354CE10DD4DBAD869AAE /* Runtime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A44EAD0777748D1F6A949DA /* Runtime.m */; };
 		6AC8474B597698274D4A8A2D /* NativeScript.xcframework in NativeScript Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5323D4086059983F7DECE56F /* NativeScript.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B572176FE07A8BB099897227 /* TNSWidgets.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 153198D7CCA86575A050502B /* TNSWidgets.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -61,7 +62,6 @@
 		00E356EE1AD99517003FC87E /* NativescriptRuntimeExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NativescriptRuntimeExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* NativescriptRuntimeExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NativescriptRuntimeExampleTests.m; sourceTree = "<group>"; };
-		0589E870DD4565D573730DB1 /* Runtime.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Runtime.h; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* NativescriptRuntimeExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NativescriptRuntimeExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = NativescriptRuntimeExample/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = NativescriptRuntimeExample/AppDelegate.m; sourceTree = "<group>"; tabWidth = 2; };
@@ -72,11 +72,13 @@
 		2D02E47B1E0B4A5D006451C7 /* NativescriptRuntimeExample-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NativescriptRuntimeExample-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* NativescriptRuntimeExample-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NativescriptRuntimeExample-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47F7ED3B7971BE374F7B8635 /* Pods-NativescriptRuntimeExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NativescriptRuntimeExample.debug.xcconfig"; path = "Target Support Files/Pods-NativescriptRuntimeExample/Pods-NativescriptRuntimeExample.debug.xcconfig"; sourceTree = "<group>"; };
+		4A44EAD0777748D1F6A949DA /* Runtime.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = Runtime.m; sourceTree = "<group>"; };
 		5323D4086059983F7DECE56F /* NativeScript.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = NativeScript.xcframework; sourceTree = "<group>"; };
-		54F23D97FDEDFDA51EDE2D7A /* App-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "App-Bridging-Header.h"; sourceTree = "<group>"; };
+		543D225F612814D620654949 /* Runtime.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Runtime.h; sourceTree = "<group>"; };
+		67AE4947B5C270277472FB2A /* nativescript-bundle.js */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.javascript; path = "nativescript-bundle.js"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = NativescriptRuntimeExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		9ADB643EBA17A21823759017 /* Runtime.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = Runtime.m; sourceTree = "<group>"; };
 		CA3E69C5B9553B26FBA2DF04 /* libPods-NativescriptRuntimeExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NativescriptRuntimeExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB46DE76F10D0298B381EAAA /* App-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "App-Bridging-Header.h"; sourceTree = "<group>"; };
 		E00ACF0FDA8BF921659E2F9A /* Pods-NativescriptRuntimeExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NativescriptRuntimeExample.release.xcconfig"; path = "Target Support Files/Pods-NativescriptRuntimeExample/Pods-NativescriptRuntimeExample.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -134,17 +136,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		0CE0D8D85C8C4EDD1C367B0D /* NativeScript */ = {
-			isa = PBXGroup;
-			children = (
-				9ADB643EBA17A21823759017 /* Runtime.m */,
-				0589E870DD4565D573730DB1 /* Runtime.h */,
-				54F23D97FDEDFDA51EDE2D7A /* App-Bridging-Header.h */,
-			);
-			name = NativeScript;
-			path = NativeScript;
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* NativescriptRuntimeExample */ = {
 			isa = PBXGroup;
 			children = (
@@ -180,6 +171,17 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		7AEEB4932D0FA598F2E8B5C0 /* NativeScript */ = {
+			isa = PBXGroup;
+			children = (
+				4A44EAD0777748D1F6A949DA /* Runtime.m */,
+				543D225F612814D620654949 /* Runtime.h */,
+				CB46DE76F10D0298B381EAAA /* App-Bridging-Header.h */,
+			);
+			name = NativeScript;
+			path = NativeScript;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,7 +198,8 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				6B9684456A2045ADE5A6E47E /* Pods */,
-				0CE0D8D85C8C4EDD1C367B0D /* NativeScript */,
+				F0BD463788E537DD1B739A75 /* NativeScriptUser */,
+				7AEEB4932D0FA598F2E8B5C0 /* NativeScript */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -212,6 +215,15 @@
 				2D02E4901E0B4A5D006451C7 /* NativescriptRuntimeExample-tvOSTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F0BD463788E537DD1B739A75 /* NativeScriptUser */ = {
+			isa = PBXGroup;
+			children = (
+				67AE4947B5C270277472FB2A /* nativescript-bundle.js */,
+			);
+			name = NativeScriptUser;
+			path = ../nativescript/build;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,11 +254,11 @@
 				4F0A6FC082772762E3E4C96C /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				C1D60D28B925C94BD88E79D7 /* [CP] Copy Pods Resources */,
-				D2CECD0BD364E00B3D7F38CF /* NativeScript prebuild */,
 				13B07F871A680F5B00A75B9A /* Sources */,
+				D2CECD0BD364E00B3D7F38CF /* NativeScript prebuild */,
 				C3E569BCF22D981557444107 /* NativeScript postbuild */,
-				F8FDEADE9327A3FBD0E48FD5 /* NativeScript prelink */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
+				F8FDEADE9327A3FBD0E48FD5 /* NativeScript prelink */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				4DF8E1A0DE44520042E53E0D /* NativeScript Embed Frameworks */,
@@ -358,6 +370,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				06862E4429FA61F356881D85 /* nativescript-bundle.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,7 +404,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -556,7 +569,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				229AB067BC140A02EC89F74E /* Runtime.m in Sources */,
+				617D354CE10DD4DBAD869AAE /* Runtime.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
