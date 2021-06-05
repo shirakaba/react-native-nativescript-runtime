@@ -125,6 +125,124 @@ addHandlerToController(
     },
 );
 
+@NativeClass
+class BridgeObserverIos extends NSObject {
+    static ObjCExposedMethods = {
+        "onNotification:": { returns: interop.types.void, params: [NSNotification] }
+    };
+
+    "onNotification:"(notification: NSNotification): void {
+        const {
+            object: source,
+            userInfo,
+        } = notification;
+        console.log(`[NativeScriptBridgeRequest] CUSTOM CLASS v${version} from ${source} with userInfo`, userInfo);
+
+        const name: string = userInfo.valueForKey("name");
+        const payload: any = userInfo.valueForKey("payload");
+        const id: string = userInfo.valueForKey("id");
+
+        console.log(`[NativeScriptBridgeRequest] v${version} notification parsed as dictionary:`, { name, payload, id });
+
+        function postNotification(responseUserInfo: BridgeResponseIosResolve | BridgeResponseIosReject): void {
+            NSNotificationCenter.defaultCenter.postNotificationNameObjectUserInfo(
+                bridgeResponseName,
+                null,
+                NSDictionary.dictionaryWithObjectsForKeys(
+                    [
+                        responseUserInfo.id,
+                        responseUserInfo.responseType,
+                        responseUserInfo.responseType === "reject" ? responseUserInfo.rejectArgs : responseUserInfo.resolveArg,
+                    ],
+                    [
+                        "id",
+                        "responseType",
+                        responseUserInfo.responseType === "reject" ? "rejectArgs" : "resolveArg"
+                    ]
+                )
+            );
+
+            console.log(`[NativeScriptBridgeRequest] v${version} posted :`, responseUserInfo);
+        }
+
+        let payloadJS: any;
+        try {
+            payloadJS = marshalIos(payload);
+            console.log(`[NativeScriptBridgeRequest] v${version} payload marshalled:`, payloadJS);
+        } catch(error){
+            console.log(`[NativeScriptBridgeRequest] v${version} Failed to marshal value for name "${name}"; rejecting...`);
+            const errorCode = -1;
+            const errorMessage = `Failed to marshal value for name "${name}"`;
+            const nsError = NSError.alloc().initWithDomainCodeUserInfo(
+                bridgeErrorDomain,
+                errorCode,
+                NSDictionary.dictionaryWithObjectsForKeys(
+                    [errorMessage],
+                    [NSLocalizedDescriptionKey]
+                ),
+            );
+
+            return postNotification({
+                id,
+                responseType: "reject",
+                rejectArgs: [errorCode.toString(), errorMessage, nsError],
+            });
+        }
+
+        const handler = controller[name];
+        if(!handler){
+            console.log(`[NativeScriptBridgeRequest] v${version} Lacked handler for name "${name}"; rejecting...`);
+            const errorCode = -1;
+            const errorMessage = `No handler for bridge message named "${name}"`;
+            const nsError = NSError.alloc().initWithDomainCodeUserInfo(
+                bridgeErrorDomain,
+                errorCode,
+                NSDictionary.dictionaryWithObjectsForKeys(
+                    [errorMessage],
+                    [NSLocalizedDescriptionKey]
+                ),
+            );
+
+            return postNotification({
+                id,
+                responseType: "reject",
+                rejectArgs: [errorCode.toString(), errorMessage, nsError],
+            });
+        }
+
+        console.log(`[NativeScriptBridgeRequest] v${version} Got handler for name "${name}"!`);
+        try {
+            handler(
+                id,
+                payloadJS,
+                (resolution: BridgeResponseIosResolve | BridgeResponseIosReject) => {
+                    console.log(`[NativeScriptBridgeRequest] v${version} Posting notification for handler named "${name}"...`);
+                    postNotification(resolution);
+                }
+            );
+        } catch(error){
+            console.error(`[NativeScriptBridgeRequest] v${version} Unexpected error in handler for "${name}"`, error);
+            const errorCode = -1;
+            const errorMessage = `Unexpected error in handler for "${name}": ${error.message}`;
+            const nsError = NSError.alloc().initWithDomainCodeUserInfo(
+                bridgeErrorDomain,
+                errorCode,
+                NSDictionary.dictionaryWithObjectsForKeys(
+                    [errorMessage],
+                    [NSLocalizedDescriptionKey]
+                ),
+            );
+
+            const rejection: BridgeResponseIosReject = {
+                id,
+                responseType: "reject" as const,
+                rejectArgs: [errorCode.toString(), errorMessage, nsError],
+            };
+            postNotification(rejection);
+        }
+    }
+}
+
 /**
  * Initialises the React Native -> NativeScript bridge, allowing NativeScript to subscribe to messages
  * sent from React Native.
@@ -137,127 +255,20 @@ export function initBridge(): null | (() => void) {
     }
     
     if(global.isIOS){
+        const bridgeObserverIos = new BridgeObserverIos();
+
+        NSNotificationCenter.defaultCenter.addObserverSelectorNameObject(
+            bridgeObserverIos,
+            "onNotification:",
+            bridgeRequestName,
+            null
+        );
+
         /**
          * @see https://developer.apple.com/documentation/foundation/nsnotificationcenter/1415360-addobserver
          */
-        const observer = NSNotificationCenter.defaultCenter.addObserverForNameObjectQueueUsingBlock(
-            bridgeRequestName,
-            null,
-            NSOperationQueue.mainQueue,
-            (notification: NSNotification) => {
-                const {
-                    object: source,
-                    userInfo,
-                } = notification;
-                console.log(`[NativeScriptBridgeRequest] v${version} from ${source} with userInfo`, userInfo);
-
-                const name: string = userInfo.valueForKey("name");
-                const payload: any = userInfo.valueForKey("payload");
-                const id: string = userInfo.valueForKey("id");
-
-                console.log(`[NativeScriptBridgeRequest] v${version} notification parsed as dictionary:`, { name, payload, id });
-
-                function postNotification(responseUserInfo: BridgeResponseIosResolve | BridgeResponseIosReject): void {
-                    NSNotificationCenter.defaultCenter.postNotificationNameObjectUserInfo(
-                        bridgeResponseName,
-                        null,
-                        NSDictionary.dictionaryWithObjectsForKeys(
-                            [
-                                responseUserInfo.id,
-                                responseUserInfo.responseType,
-                                responseUserInfo.responseType === "reject" ? responseUserInfo.rejectArgs : responseUserInfo.resolveArg,
-                            ],
-                            [
-                                "id",
-                                "responseType",
-                                responseUserInfo.responseType === "reject" ? "rejectArgs" : "resolveArg"
-                            ]
-                        )
-                    );
-    
-                    console.log(`[NativeScriptBridgeRequest] v${version} posted :`, responseUserInfo);
-                }
-
-                let payloadJS: any;
-                try {
-                    payloadJS = marshalIos(payload);
-                    console.log(`[NativeScriptBridgeRequest] v${version} payload marshalled:`, payloadJS);
-                } catch(error){
-                    console.log(`[NativeScriptBridgeRequest] v${version} Failed to marshal value for name "${name}"; rejecting...`);
-                    const errorCode = -1;
-                    const errorMessage = `Failed to marshal value for name "${name}"`;
-                    const nsError = NSError.alloc().initWithDomainCodeUserInfo(
-                        bridgeErrorDomain,
-                        errorCode,
-                        NSDictionary.dictionaryWithObjectsForKeys(
-                            [errorMessage],
-                            [NSLocalizedDescriptionKey]
-                        ),
-                    );
-
-                    return postNotification({
-                        id,
-                        responseType: "reject",
-                        rejectArgs: [errorCode.toString(), errorMessage, nsError],
-                    });
-                }
-
-                const handler = controller[name];
-                if(!handler){
-                    console.log(`[NativeScriptBridgeRequest] v${version} Lacked handler for name "${name}"; rejecting...`);
-                    const errorCode = -1;
-                    const errorMessage = `No handler for bridge message named "${name}"`;
-                    const nsError = NSError.alloc().initWithDomainCodeUserInfo(
-                        bridgeErrorDomain,
-                        errorCode,
-                        NSDictionary.dictionaryWithObjectsForKeys(
-                            [errorMessage],
-                            [NSLocalizedDescriptionKey]
-                        ),
-                    );
-
-                    return postNotification({
-                        id,
-                        responseType: "reject",
-                        rejectArgs: [errorCode.toString(), errorMessage, nsError],
-                    });
-                }
-
-                console.log(`[NativeScriptBridgeRequest] v${version} Got handler for name "${name}"!`);
-                try {
-                    handler(
-                        id,
-                        payloadJS,
-                        (resolution: BridgeResponseIosResolve | BridgeResponseIosReject) => {
-                            console.log(`[NativeScriptBridgeRequest] v${version} Posting notification for handler named "${name}"...`);
-                            postNotification(resolution);
-                        }
-                    );
-                } catch(error){
-                    console.error(`[NativeScriptBridgeRequest] v${version} Unexpected error in handler for "${name}"`, error);
-                    const errorCode = -1;
-                    const errorMessage = `Unexpected error in handler for "${name}": ${error.message}`;
-                    const nsError = NSError.alloc().initWithDomainCodeUserInfo(
-                        bridgeErrorDomain,
-                        errorCode,
-                        NSDictionary.dictionaryWithObjectsForKeys(
-                            [errorMessage],
-                            [NSLocalizedDescriptionKey]
-                        ),
-                    );
-    
-                    const rejection: BridgeResponseIosReject = {
-                        id,
-                        responseType: "reject" as const,
-                        rejectArgs: [errorCode.toString(), errorMessage, nsError],
-                    };
-                    postNotification(rejection);
-                }
-            }
-        );
-
         unsubscribe = () => {
-            NSNotificationCenter.defaultCenter.removeObserver(observer);
+            NSNotificationCenter.defaultCenter.removeObserver(bridgeObserverIos);
         };
         return unsubscribe;
     }
