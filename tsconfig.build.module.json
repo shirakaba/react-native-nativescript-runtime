@@ -6,5 +6,4 @@
     "outDir": "./lib/module",
     "module": "ES6"
   },
-  "exclude": ["example", "**/__tests__"]
 }

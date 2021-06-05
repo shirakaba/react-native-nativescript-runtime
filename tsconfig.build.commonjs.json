@@ -6,5 +6,4 @@
     "outDir": "./lib/commonjs",
     "module": "CommonJS"
   },
-  "exclude": ["example", "**/__tests__"]
 }

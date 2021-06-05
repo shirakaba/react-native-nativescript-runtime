@@ -50,5 +50,5 @@
   },
   // Once example/nativescript stops giving compiler errors, we can remove this line.
   // I'm only putting it here because the husky hook is preventing me from committing the changes.
-  "exclude": ["example"]
+  "exclude": ["example", "lib", "**/__tests__"]
 }
