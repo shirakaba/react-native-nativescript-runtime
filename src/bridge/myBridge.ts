@@ -23,7 +23,7 @@ interface BridgeResponseIosResolve {
     "resolveArg": any;
 }
 
-type BridgeMessageHandlerIos = (id: string, payload?: any) => Promise<BridgeResponseIosResolve | BridgeResponseIosReject>;
+type BridgeMessageHandlerIos = (id: string, payload?: any) => BridgeResponseIosResolve | BridgeResponseIosReject;
 // type BridgeMessageHandlerAndroid = (id: string, payload: any) => any;
 type BridgeMessageHandler = BridgeMessageHandlerIos; // | BridgeMessageHandlerAndroid;
 
@@ -92,38 +92,36 @@ const version: number = 4;
 addHandlerToController(
     "addNumbers",
     (id: string, payload: { a: number, b: number }) => {
-        return new Promise<BridgeResponseIosResolve | BridgeResponseIosReject>((resolve) => {
-            console.log(`[NativeScriptBridgeRequest] v${version} Running block for "addNumbers":`, { payload, id });
-            if(typeof payload !== "object" || typeof payload.a !== "number" || typeof payload.b !== "number"){
-                console.log(`[NativeScriptBridgeRequest] v${version} Will reject "addNumbers"...`);
-                const errorCode = -1;
-                const errorMessage = "Invalid arguments";
-                const nsError = NSError.alloc().initWithDomainCodeUserInfo(
-                    bridgeErrorDomain,
-                    errorCode,
-                    NSDictionary.dictionaryWithObjectsForKeys(
-                        [errorMessage],
-                        [NSLocalizedDescriptionKey]
-                    ),
-                );
-    
-                return resolve({
-                    id,
-                    responseType: "reject",
-                    rejectArgs: [errorCode.toString(), errorMessage, nsError],
-                });
-            }
+        console.log(`[NativeScriptBridgeRequest] v${version} Running block for "addNumbers":`, { payload, id });
+        if(typeof payload !== "object" || typeof payload.a !== "number" || typeof payload.b !== "number"){
+            console.log(`[NativeScriptBridgeRequest] v${version} Will reject "addNumbers"...`);
+            const errorCode = -1;
+            const errorMessage = "Invalid arguments";
+            const nsError = NSError.alloc().initWithDomainCodeUserInfo(
+                bridgeErrorDomain,
+                errorCode,
+                NSDictionary.dictionaryWithObjectsForKeys(
+                    [errorMessage],
+                    [NSLocalizedDescriptionKey]
+                ),
+            );
 
-            const resolution = {
+            return {
                 id,
-                responseType: "resolve" as const,
-                resolveArg: payload.a + payload.b,
+                responseType: "reject",
+                rejectArgs: [errorCode.toString(), errorMessage, nsError],
             };
+        }
 
-            console.log(`[NativeScriptBridgeRequest] v${version} Will resolve "addNumbers" with resolution`, resolution);
+        const resolution = {
+            id,
+            responseType: "resolve" as const,
+            resolveArg: payload.a + payload.b,
+        };
 
-            return resolve(resolution);
-        });
+        console.log(`[NativeScriptBridgeRequest] v${version} Will resolve "addNumbers" with resolution`, resolution);
+
+        return resolution;
     },
 );
 
@@ -226,12 +224,11 @@ export function initBridge(): null | (() => void) {
                 }
 
                 console.log(`[NativeScriptBridgeRequest] v${version} Got handler for name "${name}"!`);
-                handler(id, payloadJS)
-                .then((resolution: BridgeResponseIosResolve | BridgeResponseIosReject) => {
+                try {
+                    const resolution: BridgeResponseIosResolve | BridgeResponseIosReject = handler(id, payloadJS);
                     console.log(`[NativeScriptBridgeRequest] v${version} Posting notification for handler named "${name}"...`);
                     postNotification(resolution);
-                })
-                .catch((error: any) => {
+                } catch(error){
                     const errorCode = -1;
                     const errorMessage = `Unexpected error in handler for "${name}": ${error.message}`;
                     const nsError = NSError.alloc().initWithDomainCodeUserInfo(
@@ -242,13 +239,13 @@ export function initBridge(): null | (() => void) {
                             [NSLocalizedDescriptionKey]
                         ),
                     );
-
-                    return {
+    
+                    return postNotification({
                         id,
                         responseType: "reject",
                         rejectArgs: [errorCode.toString(), errorMessage, nsError],
-                    };
-                });
+                    });
+                }
             }
         );
 
