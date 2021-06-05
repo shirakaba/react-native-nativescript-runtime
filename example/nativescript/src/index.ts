@@ -1,5 +1,5 @@
 // init - keep here.
-import 'react-native-nativescript-runtime/lib/module/bridge';
+import { initBridge } from 'react-native-nativescript-runtime/lib/module/bridge/myBridge';
 
 /**
  *      ****       ****
@@ -20,6 +20,8 @@ if (native.isAndroid) {
 } else {
   console.log(NSString.alloc().initWithString(`Hello iOS ${hello}`));
 }
+
+initBridge();
 
 /**
  * In addition to calling platform iOS and Android api's directly,

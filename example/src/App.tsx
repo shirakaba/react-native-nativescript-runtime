@@ -9,6 +9,13 @@ export default function App() {
 
   React.useEffect(() => {
     NativescriptRuntime.multiply(3, 7).then(setResult);
+    NativescriptRuntime.postMessage('hello', { toWhom: 'world' })
+      .then((resolution) => {
+        console.log(`[React Native] got resolution`, resolution);
+      })
+      .catch((error) => {
+        console.error(`[React Native] got error`, error);
+      });
   }, []);
 
   return (
