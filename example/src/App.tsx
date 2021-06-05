@@ -8,14 +8,35 @@ export default function App() {
   const [result, setResult] = React.useState<number | undefined>();
 
   React.useEffect(() => {
-    NativescriptRuntime.multiply(3, 7).then(setResult);
-    NativescriptRuntime.postMessage('hello', { toWhom: 'world' })
-      .then((resolution) => {
-        console.log(`[React Native] got resolution`, resolution);
-      })
-      .catch((error) => {
+    async function callNative() {
+      try {
+        const multiplyResult = await NativescriptRuntime.multiply(3, 7);
+        setResult(multiplyResult);
+      } catch (error) {
         console.error(`[React Native] got error`, error);
-      });
+      }
+
+      try {
+        const sumResult = await NativescriptRuntime.postMessage('addNumbers', {
+          a: 1,
+          b: 2,
+        });
+        console.log(`[React Native] got sum result`, sumResult);
+      } catch (error) {
+        console.error(`[React Native] got sum result error`, error);
+      }
+
+      try {
+        const helloResult = await NativescriptRuntime.postMessage('hello', {
+          toWhom: 'world',
+        });
+        console.log(`[React Native] got hello result`, helloResult);
+      } catch (error) {
+        console.error(`[React Native] got hello result error`, error);
+      }
+    }
+
+    callNative();
   }, []);
 
   return (
