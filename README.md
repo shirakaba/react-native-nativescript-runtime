@@ -109,7 +109,14 @@ Things to keep in mind:
 │   ├── NativescriptRuntime.h # React Native iOS native module header. Not yet filled in.
 │   ├── NativescriptRuntime.m # React Native iOS native module implementation. Not yet filled in.
 │   ├── NativescriptRuntime.xcodeproj # React Native iOS native module xcodeproj.
-│   └── XCFrameworks.zip # Copied from @nativescript/capacitor. Not the same as the one in @nativescript/ios.
+│   └── XCFrameworks.zip # The JSC runtime, copied from @nativescript/capacitor.
+                         # Unlike @nativescript/ios/framework/internal/XCFrameworks.zip found in @nativescript/ios@8.x.x,
+                         # it lacks the TNSRuntime.h header (perhaps that's a JSC-only thing?).
+                         # Oddly, in @nativescript/ios@6.5.4, there is no XCFrameworks.zip file at all!
+                         # So it seems that this zip really was made bespoke for the Capacitor integration.
+                         # It sounds like  main reason we're using JSC rather than V8 is because this project is based on
+                         # a camera project that nStudio did for a client in Ecuador.
+                         # The good news is, this .zip is potentially stable indefinitely, as JSC is a slow-moving project.
 ├── package.json # When publishing this module to npm, it'll be from the root of the repo, using this.
 ├── react-native-nativescript-runtime.podspec # Specifies any native iOS files to be included in the CocoaPod.
 ├── scripts # Scripts to be used by both the npm package and (if necessary) the native modules.
@@ -217,7 +224,14 @@ Here is a tree of changes I've made, relative to a freshly initialised [react-na
 
 ### Android
 
-Unscoped. So far I've manually copied over (but have so far chosen not to commit) the file changes that NativeScript Capacitor made to a vanilla Capacitor app. I've not automated anything.
+Nothing working end-to-end yet; very much under construction.
+
+- [x] Assemble everything from the Capacitor `embed` folder. Reasonably confident that I've integrated the build scripts correctly, but not so sure about all the other stuff.
+- [ ] Do a test-run and see if both the app and native module compile at all.
+- [ ] Check whether all the file paths and assets used by the native module resolve correctly. I see many usages of `$rootDir`, `$userDir/nsconfig.json`, etc., which may all make incorrect assumptions.
+- [ ] See whether any of the Android files can be derived from `@nativescript/android` instead.
+- [ ] Write the bridge code.
+- [ ] Convert to a TurboModule.
 
 ### iOS
 
@@ -227,6 +241,16 @@ Auto-provisioning of the Xcode project is complete. Some steps remain manual for
 - [ ] [Swift support] Support `AppDelegate.swift`
 - [ ] Support auto-injection of runtime support into `AppDelegate.{m,swift}` (see the code blocks surrounded by `// START NativeScript runtime` and `// END NativeScript runtime`), or just give instructions.
 - [ ] Support uninstallation of NativeScript runtime support.
+- [ ] Move `use_nativescript.rb` up from the app to the iOS native module. It's only really there at the moment so that I have a shorter path to type out when running it on the CLI.
+- [ ] Take `TNSWidgets` from `@nativescript/core` rather than committing it to this repo.
+- [x] ~~Check whether `NativeScript.xcframework` can be taken from anywhere.~~ I checked `@nativescript/ios`, both v6.x.x (JSC) and v8.x.x (V8), but it wasn't there. Seems it's bespoke to the Capacitor effort.
+- [ ] Convert to a TurboModule.
+
+Despite bundling `XCFrameworks.zip`, we do still need to ensure that the root project's `node_modules` holds `@nativescript/ios` (whether as a direct dependency or as a subdependency of our npm package), because that's where our Cocoapod pulls the whole `@nativescript/ios/framework/internal` folder from (which provides things like the `nativescript-pre-build` script).
+
+There's an argument that maybe we should just bundle the `internal` folder into the native module as we're already doing so for `XCFrameworks.zip`, but I prefer to re-use published packages wherever possible. Ideally at some point we'd be able to just cleanly source everything from `@nativescript/ios`.
+
+It's probably best for it to be the responsibility of the app itself to install `@nativescript/ios` and/or `@nativescript/android`, to save disk space for anyone working on a single-platform project.
 
 ### TS/JS
 
