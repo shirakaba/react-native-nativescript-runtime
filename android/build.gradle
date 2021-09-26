@@ -1,11 +1,32 @@
 buildscript {
     if (project == rootProject) {
         repositories {
+            // START NativeScript runtime
+            //   We use this for commons-io (used in nativescript.build.gradle).
+            //   This was formerly provided by nativescript.buildscript.gradle.
+            mavenCentral()
+            // END NativeScript runtime
             google()
             jcenter()
         }
 
         dependencies {
+            // START NativeScript runtime
+            //   This is used by nativescript.build.gradle.
+            //   It was formerly provided by nativescript.buildscript.gradle.
+            classpath group: 'commons-io', name: 'commons-io', version: '2.8.0'
+
+            //   This was formerly written directly into the buildscript.dependencies of example/android/build.gradle.
+            def computeKotlinVersion = { -> project.hasProperty("kotlinVersion") ? kotlinVersion : "1.4.21"}
+            def kotlinVersion = computeKotlinVersion()
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+
+            //   This was formerly written as the final line of example/android/app/build.gradle:
+            //     apply from: '../nativescript.build.gradle'
+            //   (given that they'd stored nativescript.build.gradle in example/android/app).
+            apply from: 'nativescript.build.gradle'
+            // END NativeScript runtime
+
             classpath 'com.android.tools.build:gradle:3.5.3'
         }
     }

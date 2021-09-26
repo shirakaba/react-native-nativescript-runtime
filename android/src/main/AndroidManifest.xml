@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.reactnativenativescriptruntime">
-
+  <!-- We'd otherwise write this directly into example/android/app/src/main/AndroidManifest.xml -->
+  <application android:name="com.tns.NativeScriptApplication"></application>
 </manifest>
