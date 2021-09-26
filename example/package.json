@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "prepare": "ts-patch install -s",
     "build:nativescript": "webpack --config=node_modules/react-native-nativescript-runtime/resources/webpack.config.js --env project-dir=. --env nativescript-root=./nativescript",
     "build:mobile": "npm-run-all build build:nativescript",
     "android": "react-native run-android",
