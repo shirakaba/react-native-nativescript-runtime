@@ -12,7 +12,7 @@
     "start": "react-native start"
   },
   "dependencies": {
-    "@nativescript/ios": "^8.0.0",
+    "@nativescript/ios": "^6.5.4",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-nativescript-runtime": "file:.."
