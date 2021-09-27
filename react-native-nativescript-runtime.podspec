@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => "10.0" }
   s.source       = { :git => "https://github.com/shirakaba/react-native-nativescript-runtime.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,mm}"
+  s.source_files = ["ios/**/*.{h,m,mm}", "cpp/**/*.{h,cpp}"]
 
   # These will be packaged into the node module and, rather than the CocoaPod compiling them as sources, the
   # use_nativescript() command will do the rest.

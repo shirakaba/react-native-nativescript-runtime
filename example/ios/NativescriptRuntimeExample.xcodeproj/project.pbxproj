@@ -18,6 +18,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* NativescriptRuntimeExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* NativescriptRuntimeExampleTests.m */; };
 		617D354CE10DD4DBAD869AAE /* Runtime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A44EAD0777748D1F6A949DA /* Runtime.m */; };
 		6AC8474B597698274D4A8A2D /* NativeScript.xcframework in NativeScript Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5323D4086059983F7DECE56F /* NativeScript.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		7068CE5C8C10E8B5AB5F4D1C /* libPods-NativescriptRuntimeExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA3E69C5B9553B26FBA2DF04 /* libPods-NativescriptRuntimeExample.a */; };
 		7D2004D52664EB64006A73E7 /* libPods-NativescriptRuntimeExample.a in NativeScript Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA3E69C5B9553B26FBA2DF04 /* libPods-NativescriptRuntimeExample.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		E9250AB136913B7E6A15E6EF /* TNSWidgets.xcframework in NativeScript Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 153198D7CCA86575A050502B /* TNSWidgets.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -84,7 +85,29 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		22AC5AB7EC4DD79889B9A957 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6430002EFD67E24F79015C45 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7D2004D42664EB49006A73E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7068CE5C8C10E8B5AB5F4D1C /* libPods-NativescriptRuntimeExample.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1A15CC9FDFFC3B15561E6AD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -209,6 +232,7 @@
 			buildPhases = (
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EC1AD99517003FC87E /* Resources */,
+				22AC5AB7EC4DD79889B9A957 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -230,10 +254,10 @@
 				13B07F871A680F5B00A75B9A /* Sources */,
 				D2CECD0BD364E00B3D7F38CF /* NativeScript prebuild */,
 				C3E569BCF22D981557444107 /* NativeScript postbuild */,
-				F8FDEADE9327A3FBD0E48FD5 /* NativeScript prelink */,
 				4DF8E1A0DE44520042E53E0D /* NativeScript Embed Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				F8FDEADE9327A3FBD0E48FD5 /* NativeScript prelink */,
 				7D2004D42664EB49006A73E7 /* Frameworks */,
 			);
 			buildRules = (
@@ -253,6 +277,7 @@
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4791E0B4A5D006451C7 /* Resources */,
 				2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */,
+				6430002EFD67E24F79015C45 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -269,6 +294,7 @@
 			buildPhases = (
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
+				A1A15CC9FDFFC3B15561E6AD /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -639,8 +665,8 @@
 					"\"$(SRCROOT)/NativeScript\"",
 				);
 				INFOPLIST_FILE = NativescriptRuntimeExample/Info.plist;
-				LD = $SRCROOT/internal/nsld.sh;
-				LDPLUSPLUS = $SRCROOT/internal/nsld.sh;
+				LD = "$SRCROOT/internal/nsld.sh";
+				LDPLUSPLUS = "$SRCROOT/internal/nsld.sh";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -693,8 +719,8 @@
 					"\"$(SRCROOT)/NativeScript\"",
 				);
 				INFOPLIST_FILE = NativescriptRuntimeExample/Info.plist;
-				LD = $SRCROOT/internal/nsld.sh;
-				LDPLUSPLUS = $SRCROOT/internal/nsld.sh;
+				LD = "$SRCROOT/internal/nsld.sh";
+				LDPLUSPLUS = "$SRCROOT/internal/nsld.sh";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

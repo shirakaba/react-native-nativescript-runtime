@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-
-		5E555C0D2413F4C50049A1A2 /* NativescriptRuntime.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* NativescriptRuntime.m */; };
-
+		7DE94A21270278B90090A2F8 /* react-native-nativescript-runtime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7DE94A20270278B90090A2F8 /* react-native-nativescript-runtime.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,10 +24,10 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libNativescriptRuntime.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNativescriptRuntime.a; sourceTree = BUILT_PRODUCTS_DIR; };
-
+		7DE94A1F270278B90090A2F8 /* react-native-nativescript-runtime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "react-native-nativescript-runtime.h"; path = "../cpp/react-native-nativescript-runtime.h"; sourceTree = "<group>"; };
+		7DE94A20270278B90090A2F8 /* react-native-nativescript-runtime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "react-native-nativescript-runtime.cpp"; path = "../cpp/react-native-nativescript-runtime.cpp"; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* NativescriptRuntime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativescriptRuntime.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* NativescriptRuntime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativescriptRuntime.m; sourceTree = "<group>"; };
-
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,10 +52,10 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-
+				7DE94A20270278B90090A2F8 /* react-native-nativescript-runtime.cpp */,
+				7DE94A1F270278B90090A2F8 /* react-native-nativescript-runtime.h */,
 				B3E7B5881CC2AC0600A0062D /* NativescriptRuntime.h */,
 				B3E7B5891CC2AC0600A0062D /* NativescriptRuntime.m */,
-
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -119,9 +117,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-
-				B3E7B58A1CC2AC0600A0062D /* NativescriptRuntime.m in Sources */,
-
+				7DE94A21270278B90090A2F8 /* react-native-nativescript-runtime.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,7 +230,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = NativescriptRuntime;
 				SKIP_INSTALL = YES;
-
 			};
 			name = Debug;
 		};
@@ -251,7 +246,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = NativescriptRuntime;
 				SKIP_INSTALL = YES;
-
 			};
 			name = Release;
 		};
