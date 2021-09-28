@@ -126,6 +126,12 @@ addHandlerToController(
 );
 
 /**
+ * @platform ios NSMutableDictionary<string, (...args: any[]) => any>
+ * @platform android java.util.Map<string, (...args: any[]) => any>
+ */
+declare var gNativeScriptHandlers: any;
+
+/**
  * Initialises the React Native -> NativeScript bridge, allowing NativeScript to subscribe to messages
  * sent from React Native.
  * @returns A callback by which to deinitialise the bridge (i.e. stop listening for bridge messages).
@@ -137,6 +143,16 @@ export function initBridge(): null | (() => void) {
     }
     
     if(global.isIOS){
+        (gNativeScriptHandlers as NSMutableDictionary<string, (...args: any[]) => void>).setValueForKey(
+            (payload: any) => {
+                console.log(`Got payload`, payload);
+
+                // For now, we'll return 123 as a sanity check.
+                // In future, this generic handler will return void, and only other handlers will return (normally JSON-serialisable) values.
+                return 123;
+            },
+            "handleMessage"
+        );
         /**
          * @see https://developer.apple.com/documentation/foundation/nsnotificationcenter/1415360-addobserver
          */

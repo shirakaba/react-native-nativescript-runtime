@@ -251,14 +251,14 @@
 				4F0A6FC082772762E3E4C96C /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				C1D60D28B925C94BD88E79D7 /* [CP] Copy Pods Resources */,
-				13B07F871A680F5B00A75B9A /* Sources */,
 				D2CECD0BD364E00B3D7F38CF /* NativeScript prebuild */,
+				13B07F871A680F5B00A75B9A /* Sources */,
 				C3E569BCF22D981557444107 /* NativeScript postbuild */,
 				4DF8E1A0DE44520042E53E0D /* NativeScript Embed Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				F8FDEADE9327A3FBD0E48FD5 /* NativeScript prelink */,
 				7D2004D42664EB49006A73E7 /* Frameworks */,
+				F8FDEADE9327A3FBD0E48FD5 /* NativeScript prelink */,
 			);
 			buildRules = (
 			);

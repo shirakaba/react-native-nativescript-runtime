@@ -34,6 +34,8 @@ static void InitializeFlipper(UIApplication *application) {
 #import "NativeScript/NativeScript.h"
 // END NativeScript runtime
 
+NSMutableDictionary* gNativeScriptHandlers = nil;
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -45,6 +47,12 @@ static void InitializeFlipper(UIApplication *application) {
   // Path is implicitly relative to a folder "app" in the root of the built NativescriptRuntimeExample.app product.
   // nativescript-bundle.js is copied into the root of NativescriptRuntimeExample.app, so we have to step up by one directory to satisfy the path lookup.
   [self.runtime executeModule:@"../nativescript-bundle.js"];
+  // TODO: Expose it to the global so that our JSI module can access it from the C++ context.
+  gNativeScriptHandlers = [[NSMutableDictionary alloc] init];
+  [gNativeScriptHandlers setValue:@"123" forKey: @"foo"];
+  
+  // @see https://github.com/NativeScript/ios-runtime/blob/master/examples/BlankApp/main.m#L41
+  // @see https://stackoverflow.com/questions/30101366/converting-a-jsglobalcontextref-to-a-jscontext
   // END NativeScript runtime
   
   #ifdef FB_SONARKIT_ENABLED
