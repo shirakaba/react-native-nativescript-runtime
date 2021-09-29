@@ -33,6 +33,16 @@ Pod::Spec.new do |s|
   #   "ios/TNSWidgets.xcframework"
   # ]
 
+  # @see https://github.com/mrousavy/react-native-vision-camera/blob/main/VisionCamera.podspec
+  s.pod_target_xcconfig = {
+    # "DEFINES_MODULE" => "YES",
+    # "USE_HEADERMAP" => "YES",
+    "HEADER_SEARCH_PATHS" => "\"$(PODS_TARGET_SRCROOT)/ReactCommon\" \"$(PODS_TARGET_SRCROOT)\" \"$(PODS_ROOT)/Headers/Private/React-Core\""
+  }
+  s.requires_arc = true
+
+  s.dependency "React-callinvoker"
+  s.dependency "React"
   s.dependency "React-Core"
 
   # s.pod_target_xcconfig = {
