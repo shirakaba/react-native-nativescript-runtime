@@ -1,4 +1,5 @@
 #import "react-native-nativescript-runtime.h"
+#import "JSIUtils.h"
 
 #include <iostream>
 #include <functional>
@@ -42,15 +43,10 @@ void install(jsi::Runtime& jsiRuntime) {
 //      }
       
       NativeScriptRuntimeCallbackType callback = [gNativeScriptHandlers objectForKey:@"handleMessage"];
-      id returnValue = callback(arguments[1].getObject(runtime));
+      id rawReturnValue = callback(arguments[1].getObject(runtime));
+      jsi::Value jsiValue = convertObjCObjectToJSIValue(runtime, rawReturnValue);
       
-      jsi::Value jsiValue = jsi::Value(returnValue);
       return jsiValue;
-      
-      // TODO: determine the return type of
-
-//       double res = 42;
-//       return jsi::Value(res);
     }
   );
 
