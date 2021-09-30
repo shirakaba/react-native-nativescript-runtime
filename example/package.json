@@ -13,12 +13,12 @@
   },
   "dependencies": {
     "@nativescript/ios": "^6.5.4",
-    "react": "16.13.1",
-    "react-native": "0.63.4",
+    "react": "^17.0.1",
+    "react-native": "^0.64.2",
     "react-native-nativescript-runtime": "file:.."
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
+    "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
     "@nativescript/core": "^8.0.6",
     "@nativescript/types-android": "^8.0.1",
