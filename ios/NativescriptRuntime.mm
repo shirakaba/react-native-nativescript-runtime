@@ -1,7 +1,11 @@
+#import <React/RCTBridge+Private.h>
 #import <React/RCTConvert.h>
 #import "NativescriptRuntime.h"
+#import "../cpp/react-native-nativescript-runtime.h"
 
 @implementation NativescriptRuntime
+
+@synthesize bridge=_bridge;
 
 // Module NativescriptRuntime requires main queue setup since it overrides `init` but doesn't implement `requiresMainQueueSetup`.
 // In a future release React Native will default to initializing all native modules on a background thread unless explicitly opted-out of.
@@ -71,10 +75,41 @@
   
 }
 
+// Because we declared the setBridgeOnMainQueue property on our module, React Native will
+// implicitly call [setBridge bridge].
+// @see https://blog.notesnook.com/getting-started-react-native-jsi/
+// TODO: figure out what the right TS typings will be for this module. Whether it's a global call or module one.
+- (void)setBridge:(RCTBridge *)bridge {
+  _bridge = bridge;
+  _setBridgeOnMainQueue = RCTIsMainQueue();
+
+  RCTCxxBridge *cxxBridge = (RCTCxxBridge *)self.bridge;
+  if (!cxxBridge.runtime) {
+    return;
+  }
+  
+  ReactNativeNativeScriptRuntime::install(*(facebook::jsi::Runtime *)cxxBridge.runtime);
+}
+
+// Again, another magic method name?
+// Got it from Oscar's example.
+- (void)invalidate {
+  if(!self.bridge){
+    return;
+  }
+  RCTCxxBridge *cxxBridge = (RCTCxxBridge *)self.bridge;
+  if (!cxxBridge.runtime) {
+    return;
+  }
+  ReactNativeNativeScriptRuntime::uninstall(*(facebook::jsi::Runtime *)cxxBridge.runtime);
+}
+
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+// Below this are some classic bridge APIs. We may keep them around for performance comparisons.
 
 RCT_EXPORT_MODULE()
 
