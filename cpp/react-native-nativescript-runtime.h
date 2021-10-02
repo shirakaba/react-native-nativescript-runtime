@@ -1,6 +1,8 @@
 #ifndef REACT_NATIVE_NATIVESCRIPT_RUNTIME_H
 #define REACT_NATIVE_NATIVESCRIPT_RUNTIME_H
 
+#import "../ios/gNativeScriptHandlers.h"
+
 // We could swap out Foundation's NSDictionary with Core Foundation's CFDictionary,
 // (which is compatible with C++, meaning that this wouldn't have to be Obj-C++.
 // However, the APIs are far more awkward (at both points of use – when initialising
@@ -10,10 +12,6 @@
 #include <Foundation/Foundation.h>
 #include <jsi/jsilib.h>
 #include <jsi/jsi.h>
-
-// This will be null until AppDelegate.m assigns it.
-// The moment it is assigned, it is ready to be called upon.
-extern NSMutableDictionary *gNativeScriptHandlers;
 
 namespace ReactNativeNativeScriptRuntime {
 

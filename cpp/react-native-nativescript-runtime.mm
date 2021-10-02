@@ -10,8 +10,6 @@ using namespace facebook;
 // In C++, the equivalent would be: std::function<void(jsi::Value*)>>
 typedef id (^NativeScriptRuntimeCallbackType)(jsi::Object payload);
 
-NSMutableDictionary* gNativeScriptHandlers = nil;
-
 namespace ReactNativeNativeScriptRuntime {
 // @see https://github.com/ospfranco/react-native-jsi-template
 // @see https://ospfranco.com/post/2021/02/24/how-to-create-a-javascript-jsi-module/
@@ -25,7 +23,7 @@ void install(jsi::Runtime& jsiRuntime) {
     return;
   }
   
-  gNativeScriptHandlers = [[NSMutableDictionary alloc] init];
+  ReactNativeNativeScriptRuntimeInitialiseNativeScriptHandlers();
 
   auto postMessageToNativeScript = jsi::Function::createFromHostFunction(
     jsiRuntime,
