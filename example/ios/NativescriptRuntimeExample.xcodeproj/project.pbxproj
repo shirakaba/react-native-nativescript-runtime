@@ -19,7 +19,6 @@
 		617D354CE10DD4DBAD869AAE /* Runtime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A44EAD0777748D1F6A949DA /* Runtime.m */; };
 		6AC8474B597698274D4A8A2D /* NativeScript.xcframework in NativeScript Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5323D4086059983F7DECE56F /* NativeScript.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		6C8329BDE018DCE5FA404CCA /* libPods-NativescriptRuntimeExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 505620D85D2718DAC9DB552B /* libPods-NativescriptRuntimeExample.a */; };
-		7D2004D52664EB64006A73E7 /* BuildFile in NativeScript Embed Frameworks */ = {isa = PBXBuildFile; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		E9250AB136913B7E6A15E6EF /* TNSWidgets.xcframework in NativeScript Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 153198D7CCA86575A050502B /* TNSWidgets.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -48,7 +47,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7D2004D52664EB64006A73E7 /* BuildFile in NativeScript Embed Frameworks */,
 				6AC8474B597698274D4A8A2D /* NativeScript.xcframework in NativeScript Embed Frameworks */,
 				E9250AB136913B7E6A15E6EF /* TNSWidgets.xcframework in NativeScript Embed Frameworks */,
 			);
@@ -252,8 +250,8 @@
 				FD10A7F022414F080027D42C /* Start Packager */,
 				D2CECD0BD364E00B3D7F38CF /* NativeScript prebuild */,
 				13B07F871A680F5B00A75B9A /* Sources */,
-				4DF8E1A0DE44520042E53E0D /* NativeScript Embed Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
+				4DF8E1A0DE44520042E53E0D /* NativeScript Embed Frameworks */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				F8FDEADE9327A3FBD0E48FD5 /* NativeScript prelink */,
 				7D2004D42664EB49006A73E7 /* Frameworks */,
@@ -646,8 +644,8 @@
 					"\"$(SRCROOT)/NativeScript\"",
 				);
 				INFOPLIST_FILE = NativescriptRuntimeExample/Info.plist;
-				LD = "$SRCROOT/internal/nsld.sh";
-				LDPLUSPLUS = "$SRCROOT/internal/nsld.sh";
+				LD = $SRCROOT/internal/nsld.sh;
+				LDPLUSPLUS = $SRCROOT/internal/nsld.sh;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -700,8 +698,8 @@
 					"\"$(SRCROOT)/NativeScript\"",
 				);
 				INFOPLIST_FILE = NativescriptRuntimeExample/Info.plist;
-				LD = "$SRCROOT/internal/nsld.sh";
-				LDPLUSPLUS = "$SRCROOT/internal/nsld.sh";
+				LD = $SRCROOT/internal/nsld.sh;
+				LDPLUSPLUS = $SRCROOT/internal/nsld.sh;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

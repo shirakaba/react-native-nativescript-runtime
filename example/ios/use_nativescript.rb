@@ -145,10 +145,10 @@ def use_nativescript(options={})
     existingPhaseIndex = projectTarget.build_phases.index { |phase| defined?(phase.name) && phase.name == phaseName }
     # Reminder: even 0 is truthy in Ruby; only false and nil are falsy.
     # The new_shell_script_build_phase helper shoves the build phase on the end of the array, so we'll have to shift them as appropriate subsequently.
-    existingPhase = existingPhaseIndex ? projectTarget.build_phases[existingPhaseIndex] : projectTarget.new_shell_script_build_phase(phaseName)
-    existingPhase.shell_script = shellScript
+    buildPhase = existingPhaseIndex ? projectTarget.build_phases[existingPhaseIndex] : projectTarget.new_shell_script_build_phase(phaseName)
+    buildPhase.shell_script = shellScript
+    return buildPhase
   end
-
 
   ensure_nativescript_build_phase(projectTarget, loggingPrefix, "NativeScript prebuild", "\"${SRCROOT}/internal/nativescript-pre-build\"")
   ensure_nativescript_build_phase(projectTarget, loggingPrefix, "NativeScript prelink", "\"${SRCROOT}/internal/nativescript-pre-link\"")
@@ -208,10 +208,6 @@ def use_nativescript(options={})
     exit(1)
   end
   compileSourcesPhase = projectTarget.build_phases[compileSourcesPhaseIndex]
-  if(doPostbuild) then
-    # FIXME: apparently this should actually be placed after prelink but before Embed Pods Frameworks 
-    place_nativescript_build_phase(projectTarget, loggingPrefix, "NativeScript postbuild", compileSourcesPhaseIndex + 1)
-  end
   place_nativescript_build_phase(projectTarget, loggingPrefix, "NativeScript prebuild", compileSourcesPhaseIndex)
 
   # "Link Binary With Libraries" phase (there are strictly 0-1 of these)
@@ -225,9 +221,9 @@ def use_nativescript(options={})
   # resultingLinkingPhaseIndex = projectTarget.build_phases.index { |phase| phase.instance_of? Xcodeproj::Project::Object::PBXFrameworksBuildPhase }
   # puts "#{loggingPrefix} ℹ️ prelink phase placed at #{linkingPhaseIndex} (where 'Link Binary with Libraries' was, hopefully shunting it to a new position of one higher: #{resultingLinkingPhaseIndex}"
 
-  linkingPhase = projectTarget.build_phases[linkingPhaseIndex + 1]
-  if(!linkingPhase.instance_of? Xcodeproj::Project::Object::PBXFrameworksBuildPhase)
-    puts "#{loggingPrefix} ❌ Expected to find \"Link Binary with Libraries\" build phase at position #{linkingPhaseIndex + 1}, but the sorting has clearly gone wrong."
+  linkingPhase = projectTarget.build_phases.find { |phase| phase.instance_of? Xcodeproj::Project::Object::PBXFrameworksBuildPhase }
+  if(!linkingPhase)
+    puts "#{loggingPrefix} ❌ Expected to find \"Link Binary with Libraries\" build phase, but it was missing."
     exit(1)
   end
 
@@ -268,25 +264,33 @@ def use_nativescript(options={})
   end
   tnsWidgetsXcframeworkFileRef.build_files.each { |build_file| build_file.settings = { "ATTRIBUTES" => ["CodeSignOnCopy"] } }
 
-  # embedPhase = projectTarget.build_phases.find { |phase| phase.instance_of? Xcodeproj::Project::Object::PBXCopyFilesBuildPhase }
-  # TODO: order this to be immediately after "Copy Bundle Resources" (and then postbuild immediately after this)
-  embedPhase = projectTarget.build_phases.find { |phase| defined?(phase.name) && phase.name == "NativeScript Embed Frameworks" }
-  if(!embedPhase)
-    embedPhase = projectTarget.new_copy_files_build_phase("NativeScript Embed Frameworks")
+  def ensure_nativescript_embed_phase(
+    projectTarget,
+    loggingPrefix,
+    phaseName,
+    extractedNativeScriptXcframeworkFileRef,
+    tnsWidgetsXcframeworkFileRef
+  )
+    # existingPhaseIndex = projectTarget.build_phases.find { |phase| phase.instance_of? Xcodeproj::Project::Object::PBXCopyFilesBuildPhase }
+    existingPhaseIndex = projectTarget.build_phases.index { |phase| defined?(phase.name) && phase.name == phaseName }
+    # The new_shell_script_build_phase helper shoves the build phase on the end of the array, so we'll have to shift them as appropriate subsequently.
+    embedPhase = existingPhaseIndex ? projectTarget.build_phases[existingPhaseIndex] : projectTarget.new_copy_files_build_phase(phaseName)
     
     embedPhase.dst_path = ""
     embedPhase.dst_subfolder_spec = Xcodeproj::Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS[:frameworks]
 
-    if !embedPhase.files.any? { |ref| ref.file_ref.path.end_with? "NativeScript.xcframework" }
+    if !embedPhase.files.any? { |ref| ref&.file_ref&.path&.end_with? "NativeScript.xcframework" }
       embedPhase.add_file_reference(extractedNativeScriptXcframeworkFileRef)
     end
 
-    if !embedPhase.files.any? { |ref| ref.file_ref.path.end_with? "TNSWidgets.xcframework" }
+    if !embedPhase.files.any? { |ref| ref&.file_ref&.path&.end_with? "TNSWidgets.xcframework" }
       embedPhase.add_file_reference(tnsWidgetsXcframeworkFileRef)
     end
 
     puts "#{loggingPrefix} ✅ Added \"NativeScript Embed Frameworks\" build phase."
+    return embedPhase
   end
+  embedPhase = ensure_nativescript_embed_phase(projectTarget, loggingPrefix, "NativeScript Embed Frameworks", extractedNativeScriptXcframeworkFileRef, tnsWidgetsXcframeworkFileRef)
 
   nativeScriptUserGroup = project.groups.find { |ref|
     puts("project.group[i] #{ref}")
@@ -318,9 +322,18 @@ def use_nativescript(options={})
   # PBXResourcesBuildPhase
   resourcesPhase = projectTarget.resources_build_phase
   if(resourcesPhase.nil?)
-    puts "#{loggingPrefix} ❌ Unable to add NativeScript built code bundle as there is no Copy Bundle Resources set up yet. Please add it into your Xcode project's build phases via the option \"New Copy Bundle Resources Phase\", then try repeating `pod install`."
+    puts "#{loggingPrefix} ❌ Unable to add NativeScript built code bundle as there is no \"Copy Bundle Resources\" set up yet. Please add it into your Xcode project's build phases via the option \"New Copy Bundle Resources Phase\", then try repeating `pod install`."
     exit(1)
   end
+  resourcesPhaseIndex = projectTarget.build_phases.index { |phase| phase == resourcesPhase }
+  place_nativescript_build_phase(projectTarget, loggingPrefix, "NativeScript Embed Frameworks", resourcesPhaseIndex + 1)
+  if(doPostbuild) then
+    # In fresh NativeScript projects, postbuild appears several phases after "Compile Sources": just after "Copy Bundle Resources".
+    place_nativescript_build_phase(projectTarget, loggingPrefix, "NativeScript postbuild", resourcesPhaseIndex + 2)
+  end
+
+  # TODO: Before placing prelink, ensure that \"Link Bindary With Libraries" is moved to straight after Compile Sources?
+  # I'm not really sure to what extend the exact ordering matters, but it would be consistent with new NativeScript projects.
   
   puts "#{loggingPrefix} resourcesPhase.files: #{resourcesPhase.files}"
   if(!resourcesPhase.files.any? { |ref| ref.file_ref.path.end_with? "nativescript-bundle.js" })
