@@ -82,11 +82,15 @@ Pod::Spec.new do |s|
     "Security",
   ]
 
-  # If you mouse-over the OTHER_LDFLAGS in the build target, this approach appears to have worked.
-  # I have tried downgrading this to s.pod_target_xcconfig but it does not affect the project-level
-  # OTHER_LDFLAGS, so I think editing s.user_target_xcconfig is appropriate after all.
   s.user_target_xcconfig = {
-    'OTHER_LDFLAGS' => nativeScriptLdFlags
+    'HEADER_SEARCH_PATHS' => ["$(inherited)", "\"$(SRCROOT)/NativeScript\""],
+    'OTHER_LDFLAGS' => nativeScriptLdFlags,
+    'LD' => "$SRCROOT/internal/nsld.sh",
+    'LDPLUSPLUS' => "$SRCROOT/internal/nsld.sh",
+    # By default, this is NO for debug and YES for release. This is one state change we won't be able to undo during uninstall.
+    'ENABLE_BITCODE' => "NO",
+    # By default, this is YES. This is one state change we won't be able to undo during uninstall.
+    'CLANG_ENABLE_MODULES' => "NO"
   }
 
   s.requires_arc = true
