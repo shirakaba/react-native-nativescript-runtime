@@ -18,8 +18,8 @@
 		2DCD954D1E0B4F2C00145EB5 /* NativescriptRuntimeExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* NativescriptRuntimeExampleTests.m */; };
 		617D354CE10DD4DBAD869AAE /* Runtime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A44EAD0777748D1F6A949DA /* Runtime.m */; };
 		6AC8474B597698274D4A8A2D /* NativeScript.xcframework in NativeScript Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5323D4086059983F7DECE56F /* NativeScript.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		7068CE5C8C10E8B5AB5F4D1C /* libPods-NativescriptRuntimeExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA3E69C5B9553B26FBA2DF04 /* libPods-NativescriptRuntimeExample.a */; };
-		7D2004D52664EB64006A73E7 /* libPods-NativescriptRuntimeExample.a in NativeScript Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA3E69C5B9553B26FBA2DF04 /* libPods-NativescriptRuntimeExample.a */; };
+		6C8329BDE018DCE5FA404CCA /* libPods-NativescriptRuntimeExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 505620D85D2718DAC9DB552B /* libPods-NativescriptRuntimeExample.a */; };
+		7D2004D52664EB64006A73E7 /* BuildFile in NativeScript Embed Frameworks */ = {isa = PBXBuildFile; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		E9250AB136913B7E6A15E6EF /* TNSWidgets.xcframework in NativeScript Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 153198D7CCA86575A050502B /* TNSWidgets.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -48,7 +48,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7D2004D52664EB64006A73E7 /* libPods-NativescriptRuntimeExample.a in NativeScript Embed Frameworks */,
+				7D2004D52664EB64006A73E7 /* BuildFile in NativeScript Embed Frameworks */,
 				6AC8474B597698274D4A8A2D /* NativeScript.xcframework in NativeScript Embed Frameworks */,
 				E9250AB136913B7E6A15E6EF /* TNSWidgets.xcframework in NativeScript Embed Frameworks */,
 			);
@@ -73,11 +73,11 @@
 		2D02E4901E0B4A5D006451C7 /* NativescriptRuntimeExample-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NativescriptRuntimeExample-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47F7ED3B7971BE374F7B8635 /* Pods-NativescriptRuntimeExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NativescriptRuntimeExample.debug.xcconfig"; path = "Target Support Files/Pods-NativescriptRuntimeExample/Pods-NativescriptRuntimeExample.debug.xcconfig"; sourceTree = "<group>"; };
 		4A44EAD0777748D1F6A949DA /* Runtime.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = Runtime.m; sourceTree = "<group>"; };
+		505620D85D2718DAC9DB552B /* libPods-NativescriptRuntimeExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NativescriptRuntimeExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5323D4086059983F7DECE56F /* NativeScript.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = NativeScript.xcframework; sourceTree = "<group>"; };
 		543D225F612814D620654949 /* Runtime.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Runtime.h; sourceTree = "<group>"; };
 		67AE4947B5C270277472FB2A /* nativescript-bundle.js */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.javascript; path = "nativescript-bundle.js"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = NativescriptRuntimeExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		CA3E69C5B9553B26FBA2DF04 /* libPods-NativescriptRuntimeExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NativescriptRuntimeExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB46DE76F10D0298B381EAAA /* App-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "App-Bridging-Header.h"; sourceTree = "<group>"; };
 		E00ACF0FDA8BF921659E2F9A /* Pods-NativescriptRuntimeExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NativescriptRuntimeExample.release.xcconfig"; path = "Target Support Files/Pods-NativescriptRuntimeExample/Pods-NativescriptRuntimeExample.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -103,7 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7068CE5C8C10E8B5AB5F4D1C /* libPods-NativescriptRuntimeExample.a in Frameworks */,
+				6C8329BDE018DCE5FA404CCA /* libPods-NativescriptRuntimeExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,9 +153,9 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				CA3E69C5B9553B26FBA2DF04 /* libPods-NativescriptRuntimeExample.a */,
 				5323D4086059983F7DECE56F /* NativeScript.xcframework */,
 				153198D7CCA86575A050502B /* TNSWidgets.xcframework */,
+				505620D85D2718DAC9DB552B /* libPods-NativescriptRuntimeExample.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -250,15 +250,14 @@
 			buildPhases = (
 				4F0A6FC082772762E3E4C96C /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
-				C1D60D28B925C94BD88E79D7 /* [CP] Copy Pods Resources */,
 				D2CECD0BD364E00B3D7F38CF /* NativeScript prebuild */,
 				13B07F871A680F5B00A75B9A /* Sources */,
-				C3E569BCF22D981557444107 /* NativeScript postbuild */,
 				4DF8E1A0DE44520042E53E0D /* NativeScript Embed Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				7D2004D42664EB49006A73E7 /* Frameworks */,
 				F8FDEADE9327A3FBD0E48FD5 /* NativeScript prelink */,
+				7D2004D42664EB49006A73E7 /* Frameworks */,
+				9E5182599F78B7568DEDBA68 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -439,7 +438,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C1D60D28B925C94BD88E79D7 /* [CP] Copy Pods Resources */ = {
+		9E5182599F78B7568DEDBA68 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -456,24 +455,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NativescriptRuntimeExample/Pods-NativescriptRuntimeExample-resources.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		C3E569BCF22D981557444107 /* NativeScript postbuild */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "NativeScript postbuild";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/internal/nativescript-post-build\"\n";
 		};
 		D2CECD0BD364E00B3D7F38CF /* NativeScript prebuild */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -509,7 +490,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/internal/nativescript-pre-link\"\n";
+			shellScript = "\"${SRCROOT}/internal/nativescript-pre-link\"";
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -665,8 +646,8 @@
 					"\"$(SRCROOT)/NativeScript\"",
 				);
 				INFOPLIST_FILE = NativescriptRuntimeExample/Info.plist;
-				LD = $SRCROOT/internal/nsld.sh;
-				LDPLUSPLUS = $SRCROOT/internal/nsld.sh;
+				LD = "$SRCROOT/internal/nsld.sh";
+				LDPLUSPLUS = "$SRCROOT/internal/nsld.sh";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -719,8 +700,8 @@
 					"\"$(SRCROOT)/NativeScript\"",
 				);
 				INFOPLIST_FILE = NativescriptRuntimeExample/Info.plist;
-				LD = $SRCROOT/internal/nsld.sh;
-				LDPLUSPLUS = $SRCROOT/internal/nsld.sh;
+				LD = "$SRCROOT/internal/nsld.sh";
+				LDPLUSPLUS = "$SRCROOT/internal/nsld.sh";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
