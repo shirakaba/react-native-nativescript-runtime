@@ -39,56 +39,6 @@ Pod::Spec.new do |s|
     "USE_HEADERMAP" => "YES",
     "HEADER_SEARCH_PATHS" => "\"$(PODS_TARGET_SRCROOT)/ReactCommon\" \"$(PODS_TARGET_SRCROOT)\" \"$(PODS_ROOT)/Headers/Private/React-Core\""
   }
-
-  nativeScriptLdFlags = [
-    ## These were linked in the NativeScript Capacitor example, but I think even the WebKit bit was purely added with Capacitor apps in mind.
-    # "$(inherited)",
-    # "-framework",
-    # "Capacitor",
-    # "-framework",
-    # "Cordova",
-    # "-framework",
-    # "WebKit",
-    # "$(inherited)",
-
-    ## These are the NativeScript-specific flags.
-    ## Fortunately, Ld is quite happy to accept the same flag multiple times.
-    ## So even if React Native declares "-ObjC", "-lc++" (and more), it's no problem to re-specify it.
-    ## This is good, because we identify whether NativeScript has set up in the Build Settings based on this set of flags being in this order.
-    "-ObjC",
-    "-sectcreate",
-    "__DATA",
-    "__TNSMetadata",
-    "\"$(CONFIGURATION_BUILD_DIR)/metadata-$(CURRENT_ARCH).bin\"",
-    "-framework",
-    "NativeScript",
-    ## TODO: make this path customisable based on where we installed nativeScriptIosInternalDirectoryDestPath to.
-    ## We're a bit limited on options because we can't resolve Xcode variables like SRCROOT from the pod.
-    ## I think ideally we'd derive it directly from node_modules (nativeScriptIosInternalDirectorySourcePath) to skip the copy step.
-    ## But then maybe we'd be bundling more than necessary (the copy step deletes superfluous files from internal). I'm not sure!
-    "-F\"$(SRCROOT)/internal\"",
-    "-licucore",
-    "-lz",
-    "-lc++",
-    "-framework",
-    "Foundation",
-    "-framework",
-    "UIKit",
-    "-framework",
-    "CoreGraphics",
-    "-framework",
-    "MobileCoreServices",
-    "-framework",
-    "Security",
-  ]
-
-  # If you mouse-over the OTHER_LDFLAGS in the build target, this approach appears to have worked.
-  # I have tried downgrading this to s.pod_target_xcconfig but it does not affect the project-level
-  # OTHER_LDFLAGS, so I think editing s.user_target_xcconfig is appropriate after all.
-  s.user_target_xcconfig = {
-    'OTHER_LDFLAGS' => nativeScriptLdFlags
-  }
-
   s.requires_arc = true
 
   s.dependency "React-callinvoker"

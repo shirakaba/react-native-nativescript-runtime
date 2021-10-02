@@ -399,6 +399,100 @@ def use_nativescript(options={})
     config.build_settings["SWIFT_OBJC_BRIDGING_HEADER"] = "\"$(SRCROOT)/NativeScript/App-Bridging-Header.h\""
     puts "#{loggingPrefix} ✅ Updated SWIFT_OBJC_BRIDGING_HEADER: #{config.build_settings[:SWIFT_OBJC_BRIDGING_HEADER]}"
 
+    # TODO: See if this could be delegated to the .podspec for the native module.
+    ourLdFlags = "$(inherited) -framework Capacitor -framework Cordova -framework WebKit $(inherited) -ObjC -sectcreate __DATA __TNSMetadata \"$(CONFIGURATION_BUILD_DIR)/metadata-$(CURRENT_ARCH).bin\" -framework NativeScript \"-F$(SRCROOT)/internal\" -licucore -lz -lc++ -framework Foundation -framework UIKit -framework CoreGraphics -framework MobileCoreServices -framework Security"
+
+    nativeScriptLdFlags = [
+      ## These were linked in the NativeScript Capacitor example, but I think even the WebKit bit was purely added with Capacitor apps in mind.
+      # "$(inherited)",
+      # "-framework",
+      # "Capacitor",
+      # "-framework",
+      # "Cordova",
+      # "-framework",
+      # "WebKit",
+      # "$(inherited)",
+
+      ## These are the NativeScript-specific flags.
+      ## Fortunately, Ld is quite happy to accept the same flag multiple times.
+      ## So even if React Native declares "-ObjC", "-lc++" (and more), it's no problem to re-specify it.
+      ## This is good, because we identify whether NativeScript has set up in the Build Settings based on this set of flags being in this order.
+      "-ObjC",
+      "-sectcreate",
+      "__DATA",
+      "__TNSMetadata",
+      "\"$(CONFIGURATION_BUILD_DIR)/metadata-$(CURRENT_ARCH).bin\"",
+      "-framework",
+      "NativeScript",
+      ## TODO: make this path customisable based on where we installed nativeScriptIosInternalDirectoryDestPath to.
+      ## We're a bit limited on options because we can't resolve Xcode variables like SRCROOT from the pod.
+      ## I think ideally we'd derive it directly from node_modules (nativeScriptIosInternalDirectorySourcePath) to skip the copy step.
+      ## But then maybe we'd be bundling more than necessary (the copy step deletes superfluous files from internal). I'm not sure!
+      "-F\"$(SRCROOT)/internal\"",
+      "-licucore",
+      "-lz",
+      "-lc++",
+      "-framework",
+      "Foundation",
+      "-framework",
+      "UIKit",
+      "-framework",
+      "CoreGraphics",
+      "-framework",
+      "MobileCoreServices",
+      "-framework",
+      "Security",
+    ]
+
+    def array_includes_array(array_to_inspect, array_to_search_for)
+      inspectLength = array_to_inspect.length
+      searchLength = array_to_search_for.length
+    
+      if searchLength == 0 then
+        return true
+      end
+    
+      if searchLength > inspectLength then
+        return false
+      end
+    
+      buffer = []
+    
+      for i in 0..inspectLength
+        buffer.push(array_to_inspect[i])
+    
+        bufferLastIndex = buffer.length - 1
+        if(buffer[bufferLastIndex] != array_to_search_for[bufferLastIndex]) then
+          buffer.clear
+          next
+        end
+    
+        if(buffer.length == searchLength) then
+          return true
+        end
+      end
+    
+      return false
+    end
+
+    # If the Xcode build gives the error "Command Ld failed", then it's probably due to a poor update of OTHER_LDFLAGS here:
+    existing_OTHER_LDFLAGS = config.build_settings["OTHER_LDFLAGS"] ||= []
+    if(!array_includes_array(existing_OTHER_LDFLAGS, nativeScriptLdFlags)) then
+      puts "#{loggingPrefix} ℹ️  Existing OTHER_LDFLAGS: #{existing_OTHER_LDFLAGS}"
+      # Initial state:
+      # "OTHER_LDFLAGS"=>["$(inherited)", "-ObjC", "-lc++"]
+      puts "#{loggingPrefix} ℹ️  Planned OTHER_LDFLAGS subarray 1/3: #{existing_OTHER_LDFLAGS}"
+      puts "#{loggingPrefix} ℹ️  Planned OTHER_LDFLAGS subarray 2/3: #{(existing_OTHER_LDFLAGS.include? "$(inherited)") ? [] : ["$(inherited)"]}"
+      puts "#{loggingPrefix} ℹ️  Planned OTHER_LDFLAGS subarray 3/3: #{nativeScriptLdFlags}"
+
+      config.build_settings["OTHER_LDFLAGS"] = [
+        *existing_OTHER_LDFLAGS,
+        *((existing_OTHER_LDFLAGS.include? "$(inherited)") ? [] : ["$(inherited)"]),
+        *nativeScriptLdFlags
+      ]
+      puts "#{loggingPrefix} ✅ Updated OTHER_LDFLAGS: #{config.build_settings["OTHER_LDFLAGS"]}"
+    end
+
     config.build_settings["LD"] = "$SRCROOT/internal/nsld.sh"
     config.build_settings["LDPLUSPLUS"] = "$SRCROOT/internal/nsld.sh"
     # By default, this is NO for debug and YES for release. This is one state change we won't be able to undo during uninstall.
