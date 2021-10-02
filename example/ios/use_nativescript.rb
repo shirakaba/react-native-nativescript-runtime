@@ -372,18 +372,42 @@ def use_nativescript(options={})
     end
   }
 
-  # projectTarget.build_configurations.each { |config|
-  #   puts "#{loggingPrefix} ℹ️  Inspecting BUILD_SETTINGS for projectTarget => #{projectTarget.name} & CONFIGURATION => #{config.name}"
+  projectTarget.build_configurations.each { |config|
+    puts "#{loggingPrefix} ℹ️  Inspecting BUILD_SETTINGS for projectTarget => #{projectTarget.name} & CONFIGURATION => #{config.name}"
     
-  #   puts "#{loggingPrefix} ℹ️  Existing config.build_settings: #{config.build_settings}"
+    puts "#{loggingPrefix} ℹ️  Existing config.build_settings: #{config.build_settings}"
 
-  #   # TODO: Allow this to be user-configurable, because there's only one Obj-C bridging header allowed.
-  #   # puts "#{loggingPrefix} ℹ️  Existing SWIFT_OBJC_BRIDGING_HEADER: #{config.build_settings[:SWIFT_OBJC_BRIDGING_HEADER]}"
-  #   # config.build_settings["SWIFT_OBJC_BRIDGING_HEADER"] = "\"$(SRCROOT)/NativeScript/App-Bridging-Header.h\""
-  #   # puts "#{loggingPrefix} ✅ Updated SWIFT_OBJC_BRIDGING_HEADER: #{config.build_settings[:SWIFT_OBJC_BRIDGING_HEADER]}"
+    # Editing this Hash was quite problematic. Its keys seem to be mixture of symbols and strings or something; a lot of approaches weren't working.
+
+    # config.build_settings = {
+    #   **config.build_settings,
+    #   :HEADER_SEARCH_PATHS => "$(inherited) \"$(SRCROOT)/NativeScript\""
+    # }
+
+    # new_build_settings = Hash.new().merge(config.build_settings)
+    # new_build_settings["HEADER_SEARCH_PATHS"] = "$(inherited) \"$(SRCROOT)/NativeScript\""
+    # puts "#{loggingPrefix} ℹ️  new_build_settings: #{new_build_settings}"
+    # config.build_settings = new_build_settings
+
+    # TODO: See if this could be delegated to the .podspec for the native module.
+    puts "#{loggingPrefix} ℹ️  Existing HEADER_SEARCH_PATHS: #{config.build_settings[:HEADER_SEARCH_PATHS]}"
+    config.build_settings["HEADER_SEARCH_PATHS"] = "$(inherited) \"$(SRCROOT)/NativeScript\""
+    puts "#{loggingPrefix} ✅ Updated HEADER_SEARCH_PATHS: #{config.build_settings[:HEADER_SEARCH_PATHS]}"
+
+    # TODO: Allow this to be user-configurable, because there's only one Obj-C bridging header allowed.
+    puts "#{loggingPrefix} ℹ️  Existing SWIFT_OBJC_BRIDGING_HEADER: #{config.build_settings[:SWIFT_OBJC_BRIDGING_HEADER]}"
+    config.build_settings["SWIFT_OBJC_BRIDGING_HEADER"] = "\"$(SRCROOT)/NativeScript/App-Bridging-Header.h\""
+    puts "#{loggingPrefix} ✅ Updated SWIFT_OBJC_BRIDGING_HEADER: #{config.build_settings[:SWIFT_OBJC_BRIDGING_HEADER]}"
+
+    config.build_settings["LD"] = "$SRCROOT/internal/nsld.sh"
+    config.build_settings["LDPLUSPLUS"] = "$SRCROOT/internal/nsld.sh"
+    # By default, this is NO for debug and YES for release. This is one state change we won't be able to undo during uninstall.
+    config.build_settings["ENABLE_BITCODE"] = "NO"
+    # By default, this is YES. This is one state change we won't be able to undo during uninstall.
+    config.build_settings["CLANG_ENABLE_MODULES"] = "NO"
   
-  #   puts "#{loggingPrefix} ℹ️  Updated config.build_settings: #{config.build_settings}"
-  # }
+    puts "#{loggingPrefix} ℹ️  Updated config.build_settings: #{config.build_settings}"
+  }
   
   project.save()
 
