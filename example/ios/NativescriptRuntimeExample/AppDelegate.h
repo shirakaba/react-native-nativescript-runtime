@@ -11,10 +11,6 @@
 #import <NativeScript/NativeScript.h>
 // END NativeScript runtime
 
-// START NativeScript runtime
-extern NSMutableDictionary *gNativeScriptHandlers;
-// END NativeScript runtime
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
 
 @property (nonatomic, strong) UIWindow *window;

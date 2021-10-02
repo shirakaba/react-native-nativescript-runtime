@@ -11,15 +11,15 @@
 #include <jsi/jsilib.h>
 #include <jsi/jsi.h>
 
+// This will be null until AppDelegate.m assigns it.
+// The moment it is assigned, it is ready to be called upon.
+extern NSMutableDictionary *gNativeScriptHandlers;
+
 namespace ReactNativeNativeScriptRuntime {
 
 void install(facebook::jsi::Runtime &jsiRuntime);
 void uninstall(facebook::jsi::Runtime &jsiRuntime);
 
 } // namespace example
-
-// This will be null until AppDelegate.m assigns it.
-// The moment it is assigned, it is ready to be called upon.
-extern NSMutableDictionary *gNativeScriptHandlers;
 
 #endif /* REACT_NATIVE_NATIVESCRIPT_RUNTIME_H */

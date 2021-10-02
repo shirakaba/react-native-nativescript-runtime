@@ -34,14 +34,11 @@ static void InitializeFlipper(UIApplication *application) {
 #import "NativeScript/NativeScript.h"
 // END NativeScript runtime
 
-NSMutableDictionary* gNativeScriptHandlers = nil;
-
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   // START NativeScript runtime
-  gNativeScriptHandlers = [[NSMutableDictionary alloc] init];
   void *pointer = runtimeMeta();
   [TNSRuntime initializeMetadata:pointer];
   self.runtime = [[TNSRuntime alloc] initWithApplicationPath:[[NSBundle mainBundle] bundlePath]];

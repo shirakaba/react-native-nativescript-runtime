@@ -10,6 +10,8 @@ using namespace facebook;
 // In C++, the equivalent would be: std::function<void(jsi::Value*)>>
 typedef id (^NativeScriptRuntimeCallbackType)(jsi::Object payload);
 
+NSMutableDictionary* gNativeScriptHandlers = nil;
+
 namespace ReactNativeNativeScriptRuntime {
 // @see https://github.com/ospfranco/react-native-jsi-template
 // @see https://ospfranco.com/post/2021/02/24/how-to-create-a-javascript-jsi-module/
@@ -18,6 +20,12 @@ namespace ReactNativeNativeScriptRuntime {
 // @see https://blog.notesnook.com/getting-started-react-native-jsi/
 void install(jsi::Runtime& jsiRuntime) {
   std::cout << "Initialising NativeScript JSI" << "\n";
+  if (gNativeScriptHandlers) {
+    std::cout << "Warning: ReactNativeNativeScriptRuntime::install() called redundantly. No-op." << "\n";
+    return;
+  }
+  
+  gNativeScriptHandlers = [[NSMutableDictionary alloc] init];
 
   auto postMessageToNativeScript = jsi::Function::createFromHostFunction(
     jsiRuntime,
@@ -54,6 +62,7 @@ void install(jsi::Runtime& jsiRuntime) {
 }
 
 void uninstall(jsi::Runtime& jsiRuntime) {
+  gNativeScriptHandlers = nil;
   // We seemingly can't remove the property altogether, but let's at least try to set it to undefined.
   jsiRuntime.global().setProperty(jsiRuntime, "postMessageToNativeScript", jsi::Value::undefined());
 }
